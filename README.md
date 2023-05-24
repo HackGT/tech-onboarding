@@ -116,7 +116,7 @@ we handle authentication and our api interactions setup.
 
 ### Step 2
 
-Take a look at the `src/components` folder. Be sure to read through all the comments in all the files to get a better understanding of what's going on in the codebase. You'll be making changes to these files to complete the project. A great resource to use when working on any frontend project is our [frontend docs](https://frontend.hexlabs.org)
+Take a look at the `src/components` folder. Be sure to read through all the comments in all the files to get a better understanding of what's going on in the codebase. You'll be making changes to these files to complete the project. A great resource to use when working on any frontend project is our [frontend docs](https://frontend.hexlabs.org). In addition, take a look at the USERS service in the [api](https://github.com/HackGT/api) repo to familiarize yourself with the routes and our other frontend projects like [registration](https://github.com/HackGT/registration2) that makes API calls similar to what you will be implementing in Step 3.
 
 ### Step 3
 
@@ -127,5 +127,8 @@ Now that you have a better understanding of the codebase, it's time to start wor
 - [ ] `UserData.tsx` Add a button that allows you to sort the users by their first name
 - [ ] `UserCard.tsx` Create a modal that shows the user's full name, email, and phone number when you click on the user card
 - [ ] `UserCard.tsx` Create a modal that retrieves all of the hexathons that a user has an application for.
+- [ ] `App.tsx` Add the Header and Footer frontend components from our `hexlabs-core` [package](https://frontend.hexlabs.org).
+
+Side note: Use the [chakra-ui](https://chakra-ui.com/getting-started) package for frontend components you'd like to use, like buttons for instance - we use Chakra UI extensively on the frontend.
 
 Note that the last two tasks are a bit more difficult than the others! Don't be afraid to reach out to the tech directors for help if you feel stuck at any point! Additionally, feel free to put your own creative spin on the project. If you have any ideas for cool features, feel free to implement them!

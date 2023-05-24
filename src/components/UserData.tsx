@@ -31,7 +31,7 @@ const UserData: React.FC = () => {
       // of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
       // the Service enum and the following specific endpoint URL.
 
-      // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination. 
+      // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
       // Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
 
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
@@ -51,7 +51,7 @@ const UserData: React.FC = () => {
   // and it will run every time that variable changes.
 
 
-  // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that 
+  // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
 
 
@@ -63,13 +63,13 @@ const UserData: React.FC = () => {
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
 
-        {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective 
+        {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
         data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
-        yourself with the syntax. */}
+        yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
         { users.map((user) => (
           <UserCard user={user} />
         ))}
-        
+
       </SimpleGrid>
     </>
   );

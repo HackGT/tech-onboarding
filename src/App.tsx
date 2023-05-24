@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { setPersistence, getAuth, inMemoryPersistence } from "firebase/auth";
-import { useLogin, LoadingScreen, AuthProvider, Footer } from "@hex-labs/core";
+import { useLogin, LoadingScreen, AuthProvider } from "@hex-labs/core";
 
 import UserData from './components/UserData';
 
@@ -18,7 +18,7 @@ export const app = initializeApp({
   apiKey: "AIzaSyCsukUZtMkI5FD_etGfefO4Sr7fHkZM7Rg",
   authDomain: "auth.hexlabs.org",
 });
-export const HEXATHON_ID = String(process.env.REACT_APP_HEXATHON_ID);
+
 // Sets the Firebase persistence to in memory since we use cookies for session
 // management. These cookies are set by the backend on login/logout.
 setPersistence(getAuth(app), inMemoryPersistence);
@@ -53,7 +53,6 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<UserData />} />
       </Routes>
-      <Footer />
 
     </AuthProvider>
   );
