@@ -1,6 +1,6 @@
-# HackGT Tech Onboardnig
+# HackGT Tech Onboarding
 
-Welcome to the HackGT tech onboarding project. This will serve as an introduction to TypeScript/JavaScript, Node.js, MongoDB, and React. You can see a demo @ [https://ideas.hexlabs.org](https://ideas.hexlabs.org).
+Welcome to the HackGT tech onboarding project. This will serve as an introduction to TypeScript/JavaScript, Node.js, MongoDB, and React.
 
 This README has the following sections:
 
