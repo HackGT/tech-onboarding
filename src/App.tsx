@@ -44,6 +44,8 @@ export const App = () => {
     return <LoadingScreen />;
   }
 
+  // Test comment -Phillip
+
   // Sets up the AuthProvider so that any part of the application can use the
   // useAuth hook to retrieve the user's login details.
   return (
