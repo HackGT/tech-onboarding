@@ -40,6 +40,8 @@ To install Yarn, go [here](https://classic.yarnpkg.com/en/docs/install). After i
 
 [Here](https://docs.mongodb.com/manual/administration/install-community/) are the installation instructions for MongoDB Community Edition. Check that it's installed by running `mongo --version`.
 
+Note- run `mongod --version`, otherwise doesn't work.
+
 ### MongoDB Compass
 
 MongoDB Compass is a GUI for your database that allows you to easily interact with it and view data. Download it [here](https://www.mongodb.com/try/download/compass)
