@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { SimpleGrid, Text, Button, Stack, HStack } from "@chakra-ui/react";
+import {
+  ChevronUpIcon,
+  ChevronDownIcon,
+  SmallCloseIcon,
+} from "@chakra-ui/icons";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -29,7 +34,7 @@ const UserData: React.FC = () => {
         params: {
           regex: true,
           search: "@hexlabs.org",
-          limit: 60,
+          limit: 30,
         },
       });
       console.log(data);
@@ -57,14 +62,39 @@ const UserData: React.FC = () => {
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
 
+  const sortUsers = () => {
+    console.log("Sorted");
+    setUsers(
+      [...users].sort((a, b) =>
+        a.name.first < b.name.first ? -1 : a.name.first > b.name.first ? 1 : 0
+      )
+    );
+  };
+
+  console.log(users);
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
+      <HStack spacing="12px">
+        <Button
+          rightIcon={<ChevronDownIcon />}
+          colorScheme="linkedin"
+          size="sm"
+          onClick={sortUsers}
+        >
+          Sort
+        </Button>
+        <Button
+          rightIcon={<SmallCloseIcon />}
+          colorScheme="linkedin"
+          size="sm"
+          onClick={sortUsers}
+        >
+          Clear
+        </Button>
+      </HStack>
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
-        {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
-        data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
-        yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
         {users.map((user) => (
           <UserCard user={user} />
         ))}
