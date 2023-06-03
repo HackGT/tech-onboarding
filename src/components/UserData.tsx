@@ -35,9 +35,14 @@ const UserData: React.FC = () => {
       /*
       const [{ data: data}] = useAxios(
         apiUrl(Service.USERS, `/users`)
-      );*/
+      ); doesn't work since useAxios is called insidde non function component/ React hook*/
 
-      const data = await axios.get(apiUrl(Service.USERS, `/users`));
+      //const data = await axios.get(apiUrl(Service.USERS, `/users`)); works
+      const data = await axios.get(apiUrl(Service.USERS, `/users`),{
+        params:{
+          limit: 1000 
+        }
+      });
 
       // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
       // Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
