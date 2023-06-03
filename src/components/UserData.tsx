@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
 import { SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
+import useAxios from "axios-hooks";
 import UserCard from "./UserCard";
 
 const UserData: React.FC = () => {
@@ -31,6 +32,13 @@ const UserData: React.FC = () => {
       // of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
       // the Service enum and the following specific endpoint URL.
 
+      /*
+      const [{ data: data}] = useAxios(
+        apiUrl(Service.USERS, `/users`)
+      );*/
+
+      const data = await axios.get(apiUrl(Service.USERS, `/users`));
+
       // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
       // Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
 
@@ -40,7 +48,7 @@ const UserData: React.FC = () => {
 
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
-      // setUsers(data?.data?.profiles);
+      setUsers(data?.data?.profiles);
     };
     document.title = "Hexlabs Users"
     getUsers();
