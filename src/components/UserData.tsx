@@ -40,7 +40,8 @@ const UserData: React.FC = () => {
       //const data = await axios.get(apiUrl(Service.USERS, `/users`)); works
       const data = await axios.get(apiUrl(Service.USERS, `/users`),{
         params:{
-          limit: 1000 
+          limit: 100,
+          search: '@hexlabs.org'
         }
       });
 
