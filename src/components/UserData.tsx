@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text, Button, Stack, HStack } from "@chakra-ui/react";
+import { apiUrl, HeaderItem, Service } from "@hex-labs/core";
 import {
-  ChevronUpIcon,
-  ChevronDownIcon,
-  SmallCloseIcon,
-} from "@chakra-ui/icons";
+  SimpleGrid,
+  Text,
+  Button,
+  Stack,
+  Container,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { ChevronDownIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import UserCard from "./UserCard";
+import { SortModal } from "./Modals/SortModal";
+import { Header, Footer } from "@hex-labs/core";
 
 const UserData: React.FC = () => {
   // The useState hook is used to store state in a functional component. The
@@ -62,43 +67,95 @@ const UserData: React.FC = () => {
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
 
+  const [sorted, setSorted] = useState<boolean>(false);
+  const [filteredUsers, setFilteredUsers] = useState<any[]>(users);
+
+  const [value, setValue] = React.useState("1");
+  const {
+    isOpen: isOpenSort,
+    onOpen: onOpenSort,
+    onClose: onCloseSort,
+  } = useDisclosure();
+
   const sortUsers = () => {
-    console.log("Sorted");
-    setUsers(
-      [...users].sort((a, b) =>
-        a.name.first < b.name.first ? -1 : a.name.first > b.name.first ? 1 : 0
-      )
-    );
+    setSorted(true);
+    let filteredUsers: any[] = [];
+    switch (value) {
+      case "1":
+        filteredUsers = [...users].sort((a, b) =>
+          a.name.first < b.name.first ? -1 : a.name.first > b.name.first ? 1 : 0
+        );
+        break;
+      case "2":
+        filteredUsers = [...users].sort((a, b) =>
+          a.name.last < b.name.last ? -1 : a.name.last > b.name.last ? 1 : 0
+        );
+        break;
+      case "3":
+        filteredUsers = [...users].sort((a, b) =>
+          a.email < b.email ? -1 : a.email > b.email ? 1 : 0
+        );
+        break;
+      default:
+        filteredUsers = [...users].sort((a, b) =>
+          a.name.first < b.name.first ? -1 : a.name.first > b.name.first ? 1 : 0
+        );
+    }
+    setFilteredUsers(filteredUsers);
   };
 
-  console.log(users);
+  const clearFilters = () => {
+    setSorted(false);
+  };
+
   return (
     <>
-      <Text fontSize="4xl">Hexlabs Users</Text>
-      <HStack spacing="12px">
-        <Button
-          rightIcon={<ChevronDownIcon />}
-          colorScheme="linkedin"
-          size="sm"
-          onClick={sortUsers}
-        >
-          Sort
-        </Button>
-        <Button
-          rightIcon={<SmallCloseIcon />}
-          colorScheme="linkedin"
-          size="sm"
-          onClick={sortUsers}
-        >
-          Clear
-        </Button>
-      </HStack>
-
+      <Header
+        rightItem={<HeaderItem>Sign Out</HeaderItem>}
+        rightItemMobile={<HeaderItem>Sign Out</HeaderItem>}
+      >
+        <HeaderItem>Home</HeaderItem>
+        <HeaderItem>Profile</HeaderItem>
+      </Header>{" "}
+      <Container centerContent>
+        <Stack direction="column" spacing={3}>
+          <Text fontSize="4xl" align="center" mt="4">
+            Hexlabs Users
+          </Text>
+          <Stack direction="row" spacing={2}>
+            <Button
+              rightIcon={<ChevronDownIcon />}
+              colorScheme="linkedin"
+              size="sm"
+              onClick={onOpenSort}
+            >
+              Sort Users
+            </Button>
+            <SortModal
+              value={value}
+              setValue={setValue}
+              sortUsers={sortUsers}
+              isOpen={isOpenSort}
+              onOpen={onOpenSort}
+              onClose={onCloseSort}
+            />
+            <Button
+              rightIcon={<SmallCloseIcon />}
+              colorScheme="red"
+              size="sm"
+              onClick={clearFilters}
+            >
+              Clear Filters
+            </Button>
+          </Stack>
+        </Stack>
+      </Container>
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
-        {users.map((user) => (
-          <UserCard user={user} />
-        ))}
+        {sorted
+          ? filteredUsers.map((user) => <UserCard user={user} />)
+          : users.map((user) => <UserCard user={user} />)}
       </SimpleGrid>
+      <Footer />
     </>
   );
 };

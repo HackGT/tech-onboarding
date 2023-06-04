@@ -122,12 +122,12 @@ Take a look at the `src/components` folder. Be sure to read through all the comm
 
 Now that you have a better understanding of the codebase, it's time to start working on the project! The goal of this project is to create a simple Hexlabs profile viewer. Each of these tasks should be linked with a corresponding comment starting with `TODO` in the codebase.
 
-- [ ] `UserData.tsx` Configure the api call to get the user data from the backend api
-- [ ] `UserData.tsx` Use the existing api call but add in a filter for only emails containing @hexlabs.org
-- [ ] `UserData.tsx` Add a button that allows you to sort the users by their first name
-- [ ] `UserCard.tsx` Create a modal that shows the user's full name, email, and phone number when you click on the user card
+- [x] `UserData.tsx` Configure the api call to get the user data from the backend api
+- [x] `UserData.tsx` Use the existing api call but add in a filter for only emails containing @hexlabs.org
+- [x] `UserData.tsx` Add a button that allows you to sort the users by their first name
+- [x] `UserCard.tsx` Create a modal that shows the user's full name, email, and phone number when you click on the user card
 - [ ] `UserCard.tsx` Create a modal that retrieves all of the hexathons that a user has an application for.
-- [ ] `App.tsx` Add the Header and Footer frontend components from our `hexlabs-core` [package](https://frontend.hexlabs.org).
+- [~] `App.tsx` Add the Header and Footer frontend components from our `hexlabs-core` [package](https://frontend.hexlabs.org).
 
 Side note: Use the [chakra-ui](https://chakra-ui.com/getting-started) package for frontend components you'd like to use, like buttons for instance - we use Chakra UI extensively on the frontend.
 
