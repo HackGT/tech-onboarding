@@ -3,6 +3,15 @@ import {
   Flex,
   HStack,
   Text,
+  Button,
+  Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -24,8 +33,10 @@ type Props = {
 // and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
 
 const UserCard: React.FC<Props> = (props: Props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
+    
     <Box
     borderWidth="1px"
     rounded="lg"
@@ -33,8 +44,11 @@ const UserCard: React.FC<Props> = (props: Props) => {
     height="175px"
     fontWeight="bold"
     alignItems="center"
+    onClick={onOpen}
     >
+      
       <Flex padding="2" flexDirection="column">
+        
         <HStack align="flex-end" justify="space-between">
           <Text fontSize='xl'>{`${props.user.name.first} ${props.user.name.last}`}</Text>
         </HStack>
@@ -46,8 +60,30 @@ const UserCard: React.FC<Props> = (props: Props) => {
         >
           {props.user.email}
         </Text>
+        
       </Flex>
+      
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{`${props.user.name.first} ${props.user.name.last}`}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Phone Number: {`${props.user.phoneNumber}`}</Text>
+            <Text>Email: {`${props.user.email}`}</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant='ghost'>Secondary Action</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
     </Box>
+    
   );
 };
 
