@@ -3,8 +3,17 @@ import {
   Flex,
   HStack,
   Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Link,
+  Button,
 } from "@chakra-ui/react";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 type Props = {
   user: any;
@@ -24,30 +33,106 @@ type Props = {
 // and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
 
 const UserCard: React.FC<Props> = (props: Props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hexathons, setHexathons] = useState<any[]>([]);
+
+  const handleCardClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEmailClick = (email: string) => {
+    window.location.href = `mailto:${email}`;
+  };
+
+  const handleViewHexathons = async () => {
+    try {
+      const response = await axios.get(`/api/applications?userId=${props.user.userID}`);
+      const applications = response.data.data;
+      const hexathonIds = applications.map((application: any) => application.hexathonId);
+      const hexathonsResponse = await axios.get(`/api/hexathons?ids=${hexathonIds.join(",")}`);
+      const userHexathons = hexathonsResponse.data.data;
+      setHexathons(userHexathons);
+    } catch (error) {
+      console.error("Error fetching user hexathons:", error);
+    }
+  };
 
   return (
-    <Box
-    borderWidth="1px"
-    rounded="lg"
-    boxShadow="lg"
-    height="175px"
-    fontWeight="bold"
-    alignItems="center"
-    >
-      <Flex padding="2" flexDirection="column">
-        <HStack align="flex-end" justify="space-between">
-          <Text fontSize='xl'>{`${props.user.name.first} ${props.user.name.last}`}</Text>
-        </HStack>
-        <Text
-          fontSize="sm"
-          fontWeight="semibold"
-          justifyContent="justify"
-          mt="2"
-        >
-          {props.user.email}
-        </Text>
-      </Flex>
-    </Box>
+    <>
+      <Box
+        borderWidth="1px"
+        rounded="lg"
+        boxShadow="lg"
+        height="175px"
+        fontWeight="bold"
+        alignItems="center"
+        onClick={handleCardClick}
+        cursor="pointer"
+      >
+        <Flex padding="2" flexDirection="column">
+          <HStack align="flex-end" justify="space-between">
+            <Text fontSize="xl">{`${props.user.name.first} ${props.user.name.last}`}</Text>
+          </HStack>
+          <Text fontSize="sm" fontWeight="semibold" justifyContent="justify" mt="2">
+            <Link color="blue.500" textDecoration="underline" onClick={() => handleEmailClick(props.user.email)}>
+              {props.user.email}
+            </Link>
+          </Text>
+        </Flex>
+      </Box>
+
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} size="md">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>User Details</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontSize="x1" mb="2">{`${props.user.name.first} ${props.user.name.last}`}</Text>
+            <Text fontSize="sm" fontWeight="semibold" mb="2">
+              <Link color="blue.500" textDecoration="underline" onClick={() => handleEmailClick(props.user.email)}>
+                {props.user.email}
+              </Link>
+            </Text>
+            <Text fontSize="sm" fontWeight="semibold">{props.user.phoneNumber}</Text>
+            <Text fontSize="sm" fontWeight="semibold">{`User ID: ${props.user.userID}`}</Text>
+            {props.user.resume && (
+              <>
+                <Text fontSize="sm" fontWeight="semibold" mt="2">
+                  <Link
+                    color="blue.500"
+                    href={props.user.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    textDecoration="underline"
+                  >
+                    View Resume
+                  </Link>
+                </Text>
+                <Button mt="4" colorScheme="blue" onClick={handleViewHexathons}>
+                  View Applied Hexathons
+                </Button>
+              </>
+            )}
+            {hexathons.length > 0 && (
+              <>
+                <Text fontSize="lg" fontWeight="bold" mt="4">
+                  Applied Hexathons:
+                </Text>
+                {hexathons.map((hexathon: any) => (
+                  <Text key={hexathon.id} fontSize="sm">
+                    {hexathon.name}
+                  </Text>
+                ))}
+              </>
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

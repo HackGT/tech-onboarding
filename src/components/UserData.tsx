@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { SimpleGrid, Text, Button } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -36,12 +36,25 @@ const UserData: React.FC = () => {
 
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
 
-
-
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
       // setUsers(data?.data?.profiles);
+
+      try {
+        const response = await axios.get(apiUrl(Service.USERS, "/users"), {
+          params: {
+            limit: 100,
+          },
+        });
+        const filteredResponse = response.data.profiles.filter((student: { email: string | string[]; }) => student.email.includes("@hexlabs.org"))
+        console.log(filteredResponse)
+        setUsers(filteredResponse);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     };
+
+
     document.title = "Hexlabs Users"
     getUsers();
   }, []);
@@ -54,12 +67,30 @@ const UserData: React.FC = () => {
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
 
+  // Below is a state value that allows us to keep track of the sorting order
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  const sortUsersByFirstName = () => {
+    const sortedUsers = [...users];
+    sortedUsers.sort((a, b) => {
+      const nameA = a.name.first.toLowerCase();
+      const nameB = b.name.first.toLowerCase();
+      if (nameA < nameB) return sortOrder === "asc" ? -1 : 1;
+      if (nameA > nameB) return sortOrder === "asc" ? 1 : -1;
+      return 0;     
+    });
+    setUsers(sortedUsers);
+  };
 
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
       <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
 
+      <Button onClick={sortUsersByFirstName}>
+        Sort by First Name {sortOrder === "asc" ? "▲" : "▼"}
+      </Button>
+      {/* should display a button with the text "sort by first name" and with appropriate arrows */}
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
 
@@ -67,7 +98,7 @@ const UserData: React.FC = () => {
         data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
         yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
         { users.map((user) => (
-          <UserCard user={user} />
+          <UserCard user={user}/>
         ))}
 
       </SimpleGrid>

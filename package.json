@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
-    "@chakra-ui/react": "^2.6.1",
+    "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@firebase/app": "^0.9.10",
@@ -19,7 +19,7 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^1.4.0",
     "firebase": "^9.22.0",
-    "framer-motion": "^10.12.12",
+    "framer-motion": "^10.12.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
