@@ -1,9 +1,22 @@
-import { Box, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
-import React from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Link,
+  Stack,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { UserModal } from "./Modals/UserModal";
+import axios from "axios";
+import { Service, apiUrl } from "@hex-labs/core";
+import { AppsModal } from "./Modals/AppsModal";
 
 type Props = {
   user: any;
+  hexathons: any[];
 };
 
 // TODO: right now, the UserCard only displays the user's name and email. Create a new modal component <UserModal> that
@@ -19,11 +32,49 @@ type Props = {
 // and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
 
 const UserCard: React.FC<Props> = (props: Props) => {
+  const [applications, setApplications] = useState<any[]>([]);
+  const appsUrl = apiUrl(Service.REGISTRATION, "/applications");
+
+  const getApps = (hexathons: any[], uid: string) => {
+    let response = Promise.all(
+      hexathons.map(async (hexathon) => {
+        try {
+          let data = await axios.get(appsUrl, {
+            params: {
+              hexathon: hexathon.id,
+              userId: uid,
+            },
+          });
+          return data?.data.applications;
+        } catch (error) {
+          console.error("Not found");
+        }
+      })
+    );
+    return response;
+  };
+
+  const fetchApps = async () => {
+    const data = await getApps(props.hexathons, props.user.userId);
+    setApplications(data);
+  };
+
   const {
     isOpen: isOpenCard,
     onOpen: onOpenCard,
     onClose: onCloseCard,
   } = useDisclosure();
+
+  const {
+    isOpen: isOpenApps,
+    onOpen: onOpenApps,
+    onClose: onCloseApps,
+  } = useDisclosure();
+
+  const openFetchApps = () => {
+    fetchApps();
+    onOpenApps();
+  };
 
   return (
     <Box
@@ -33,22 +84,47 @@ const UserCard: React.FC<Props> = (props: Props) => {
       height="175px"
       fontWeight="bold"
       alignItems="center"
-      onClick={onOpenCard}
     >
       <UserModal user={props.user} isOpen={isOpenCard} onClose={onCloseCard} />
       <Flex padding="2" flexDirection="column">
-        <HStack align="flex-end" justify="space-between">
+        <HStack
+          cursor={"pointer"}
+          align="flex-end"
+          justify="space-between"
+          onClick={onOpenCard}
+        >
           <Text fontSize="xl">{`${props.user.name.first} ${props.user.name.last}`}</Text>
         </HStack>
-        <Text
-          fontSize="sm"
-          fontWeight="semibold"
-          justifyContent="justify"
-          mt="2"
-        >
-          {props.user.email}
-        </Text>
+        <Stack direction="column" spacing={2}>
+          <Text
+            fontSize="sm"
+            fontWeight="semibold"
+            justifyContent="justify"
+            mt="2"
+          >
+            {props.user.email}
+          </Text>
+          <Button colorScheme="linkedin" size="sm">
+            <Link
+              href={props.user.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              See Resume
+            </Link>
+          </Button>
+          <Button colorScheme="linkedin" size="sm" onClick={openFetchApps}>
+            See Applications
+          </Button>
+        </Stack>
       </Flex>
+      <AppsModal
+        apps={applications}
+        hexathons={props.hexathons}
+        user={props.user}
+        isOpen={isOpenApps}
+        onClose={onCloseApps}
+      />
     </Box>
   );
 };

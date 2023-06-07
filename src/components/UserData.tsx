@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { apiUrl, HeaderItem, Service } from "@hex-labs/core";
+import { apiUrl, HeaderItem, Service, Header, Footer } from "@hex-labs/core";
 import {
   SimpleGrid,
   Text,
@@ -12,7 +12,6 @@ import { ChevronDownIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import UserCard from "./UserCard";
 import { SortModal } from "./Modals/SortModal";
-import { Header, Footer } from "@hex-labs/core";
 
 const UserData: React.FC = () => {
   // The useState hook is used to store state in a functional component. The
@@ -27,6 +26,8 @@ const UserData: React.FC = () => {
   // mounts. This is useful for making API calls and other things that should
   // only happen once when the component is loaded.
 
+  const [hexathons, setHexathons] = useState<any[]>([]);
+
   useEffect(() => {
     // This is an example of an async function. The async keyword tells the
     // function to wait for the axios request to finish before continuing. This
@@ -39,10 +40,9 @@ const UserData: React.FC = () => {
         params: {
           regex: true,
           search: "@hexlabs.org",
-          limit: 30,
+          limit: 20,
         },
       });
-      console.log(data);
       // TODO: Use the apiUrl() function to make a request to the /users endpoint of our USERS service. The first argument is the URL
       // of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
       // the Service enum and the following specific endpoint URL.
@@ -56,9 +56,18 @@ const UserData: React.FC = () => {
       // the raw request response and extracts the actual data that we need from it.
       setUsers(data?.data?.profiles);
     };
+
+    const getHexathons = async () => {
+      let hexUrl = apiUrl(Service.HEXATHONS, "/hexathons");
+      const data = await axios.get(hexUrl);
+      setHexathons(data?.data);
+    };
+
     document.title = "Hexlabs Users";
     getUsers();
+    getHexathons();
   }, []);
+
   // ^^ The empty array at the end of the useEffect hook tells React that the
   // hook should only run once when the component is mounted. If you want it to
   // run every time a variable changes, you can put that variable in the array
@@ -104,10 +113,7 @@ const UserData: React.FC = () => {
     setFilteredUsers(filteredUsers);
   };
 
-  const clearFilters = () => {
-    setSorted(false);
-  };
-
+  console.log(users);
   return (
     <>
       <Header
@@ -116,7 +122,7 @@ const UserData: React.FC = () => {
       >
         <HeaderItem>Home</HeaderItem>
         <HeaderItem>Profile</HeaderItem>
-      </Header>{" "}
+      </Header>
       <Container centerContent>
         <Stack direction="column" spacing={3}>
           <Text fontSize="4xl" align="center" mt="4">
@@ -143,7 +149,7 @@ const UserData: React.FC = () => {
               rightIcon={<SmallCloseIcon />}
               colorScheme="red"
               size="sm"
-              onClick={clearFilters}
+              onClick={() => setSorted(false)}
             >
               Clear Filters
             </Button>
@@ -152,8 +158,10 @@ const UserData: React.FC = () => {
       </Container>
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
         {sorted
-          ? filteredUsers.map((user) => <UserCard user={user} />)
-          : users.map((user) => <UserCard user={user} />)}
+          ? filteredUsers.map((user) => (
+              <UserCard user={user} hexathons={hexathons} />
+            ))
+          : users.map((user) => <UserCard user={user} hexathons={hexathons} />)}
       </SimpleGrid>
       <Footer />
     </>
