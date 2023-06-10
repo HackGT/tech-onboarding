@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import { SimpleGrid, Text, Button } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -30,31 +29,31 @@ const UserData: React.FC = () => {
     	// TODO: Use the apiUrl() function to make a request to the /users endpoint of our USERS service. The first argument is the URL
     	// of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
     	// the Service enum and the following specific endpoint URL.
-	try {
-	  const url = apiUrl(Service.USERS, '/users');
-	  const response = await axios.get(url);
-	  const data = response.data;
-	  // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
-          // the raw request response and extracts the actual data that we need from it.
-	  setUsers(data?.data?.profiles);
-	} catch (error) {
-	  console.error('Error fetching users:', error);
-	}
+	    try {
+	      const url = apiUrl(Service.USERS, '/users');
+	      const response = await axios.get(url);
+	      const data = response.data;
+	      // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
+        // the raw request response and extracts the actual data that we need from it.
+	      setUsers(data?.data?.profiles);
+	    } catch (error) {
+	      console.error('Error fetching users:', error);
+	    }
       // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
       // Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
 
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
-	try {
-	  const url = apiUrl(Service.USERS, "/users");
-	  const params =  {email: "@hexlabs.org", limit:100};
-	  const response = await axios.get(url, { params });
-	  const data = response.data;
-	// uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
+	    try {
+	      const url = apiUrl(Service.USERS, "/users");
+	      const params =  {email: "@hexlabs.org", limit:100};
+	      const response = await axios.get(url, { params });
+	      const data = response.data;
+	      // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
         // the raw request response and extracts the actual data that we need from it.
-          setUsers(data?.data?.profiles);
-        } catch (error) {
-	  console.error("Error fetching users:", error);
-	}
+        setUsers(data?.data?.profiles);
+      } catch (error) {
+	      console.error("Error fetching users:", error);
+	    }
     };
     document.title = "Hexlabs Users"
     getUsers();
@@ -94,7 +93,7 @@ const UserData: React.FC = () => {
         {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
         data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
         yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
-        { users.map((user) => (
+        { users?.map((user) => (
           <UserCard user={user} />
         ))}
 
