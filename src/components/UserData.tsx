@@ -93,7 +93,7 @@ const UserData: React.FC = () => {
         {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
         data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
         yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
-        { users?.map((user) => (
+        { users!.map((user) => (
           <UserCard user={user} />
         ))}
 
