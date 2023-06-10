@@ -38,61 +38,61 @@ type Props = {
 
 const UserCard: React.FC<Props> = (props: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [hexathonsIds, setHexathonsIds] = useState<any[]>([]);
   const [userHexathons, setUserHexathons] = useState<any[]>([]);
   const mailtoURL="mailto:%20"+props.user.email;
 
   useEffect(()=>{
+
     
-    const getAllHexathons = async() =>{
+
+    const getApplications = async(currentUser: any)=>{
       const allhexathons = await axios.get(apiUrl(Service.HEXATHONS, `/hexathons`),{
       });
-      const hexathonsdata = allhexathons.data;
-      //console.log(hexathonsdata);
-      const onlyIds = hexathonsdata.map((d: { id: any; })=>(d.id));
+      const onlyIds = allhexathons.data.map((d: { id: any; })=>(d.id));
       console.log(onlyIds);
-      setHexathonsIds(onlyIds);
-      console.log(hexathonsIds);
-    }
-
-    getAllHexathons();
-    
-    const getAppliedForHexathons=async(currentUser: any)=>{
-      var i;
-      for (i=0;i<hexathonsIds.length;i++){
+      //console.log(hexathonsIds);
+      onlyIds.map(async (id: any)=>{
         const currhexathon = await axios.get(apiUrl(Service.REGISTRATION, `/applications`),{
           params:{
-            hexathon: hexathonsIds[i],
-            userId: currentUser
+            hexathon: id,
+            userId: currentUser.id
           }
         });
-        if (currhexathon.data.count>0){
-          setUserHexathons((prevUserHexathons)=>[...prevUserHexathons, currhexathon.data.name]);//add this hexathon's name to the list
+        if (currhexathon.data.count!=0){
+          setUserHexathons((prevUserHexathons)=>[...prevUserHexathons, currhexathon.data.name]);
         }
-      }
+      })
       console.log(userHexathons);
+      
+      
     }
-    getAppliedForHexathons(props.user);
+    getApplications(props.user);
     
-  }, [props.user]);//run once
+  }, []);//run once
 
-  
-  
-  async function getAppliedForHexathons(currentUser: any){
-    var i;
-    for (i=0;i<hexathonsIds.length;i++){
+  /*
+  const getApplications=async (currentUser: any)=>{
+    const allhexathons = await axios.get(apiUrl(Service.HEXATHONS, `/hexathons`),{
+    });
+    const onlyIds = allhexathons.data.map((d: { id: any; })=>(d.id));
+    console.log(onlyIds);
+    //console.log(hexathonsIds);
+    onlyIds.map(async (id: any)=>{
       const currhexathon = await axios.get(apiUrl(Service.REGISTRATION, `/applications`),{
         params:{
-          hexathon: hexathonsIds[i],
-          userId: currentUser
+          hexathon: id,
+          userId: currentUser.id
         }
       });
-      if (currhexathon.data.count>0){
-        setUserHexathons((prevUserHexathons)=>[...prevUserHexathons, currhexathon.data.name]);//add this hexathon's name to the list
+      if (currhexathon.data.count!=0){
+        setUserHexathons((prevUserHexathons)=>[...prevUserHexathons, currhexathon.data.name]);
       }
-    }
+    })
     console.log(userHexathons);
   }
+  getApplications(props.user);
+  */
+  
 
   
 
@@ -132,6 +132,7 @@ const UserCard: React.FC<Props> = (props: Props) => {
           <ModalBody>
             <Text>Phone Number: {`${props.user.phoneNumber}`}</Text>
             <Text>Email: <a href = {mailtoURL}>{`${props.user.email}`}</a></Text>
+            <Text> Id: {`${props.user.id}`}</Text>
             <Text> </Text>
           </ModalBody>
 
