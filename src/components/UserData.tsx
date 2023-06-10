@@ -27,33 +27,33 @@ const UserData: React.FC = () => {
 
     const getUsers = async () => {
 		// TODO: Use the apiUrl() function to make a request to the /users endpoint of our USERS service. The first argument is the URL
-      	// of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
-      	// the Service enum and the following specific endpoint URL.
-		try {
-			const url = apiUrl(Service.USERS, '/users');
-			const response = await axios.get(url);
-			const data = response.data;
-			// uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
-      		// the raw request response and extracts the actual data that we need from it.
-			setUsers(data?.data?.profiles);
+    // of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
+    // the Service enum and the following specific endpoint URL.
+		  try {
+			  const url = apiUrl(Service.USERS, '/users');
+			  const response = await axios.get(url);
+			  const data = response.data;
+			  // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
+        // the raw request response and extracts the actual data that we need from it.
+			  setUsers(data?.data?.profiles);
 		  } catch (error) {
-			console.error('Error fetching users:', error);
+			  console.error('Error fetching users:', error);
 		  }
-      	// TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
-      	// Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
+      // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
+      // Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
 
-      	// Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
-		try {
-			const url = apiUrl(Service.USERS, "/users");
-			const params =  {email: "@hexlabs.org", limit:100};
-			const response = await axios.get(url, { params });
-			const data = response.data;
-			// uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
-      		// the raw request response and extracts the actual data that we need from it.
-      		setUsers(data?.data?.profiles);
-      	} catch (error) {
-			console.error("Error fetching users:", error);
-		}
+      // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
+		  try {
+			  const url = apiUrl(Service.USERS, "/users");
+			  const params =  {email: "@hexlabs.org", limit:100};
+			  const response = await axios.get(url, { params });
+			  const data = response.data;
+			  // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
+        // the raw request response and extracts the actual data that we need from it.
+        setUsers(data?.data?.profiles);
+      } catch (error) {
+			  console.error("Error fetching users:", error);
+		  }
     };
     document.title = "Hexlabs Users"
     getUsers();
@@ -66,13 +66,27 @@ const UserData: React.FC = () => {
 
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
-
+  const sortUsersByFirstName = () => {
+    const sortedUsers = [...users].sort((a, b) => {
+      const nameA = a.firstName.toUpperCase();
+      const nameB = b.firstName.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+    setUsers(sortedUsers);
+  };
 
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
       <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
 
+      <Button onClick={sortUsersByFirstName}>Sort by First Name</Button>
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
 
