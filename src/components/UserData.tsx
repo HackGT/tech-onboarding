@@ -69,7 +69,6 @@ const UserData: React.FC = () => {
   function sortByFirstName(){
     const users2 = [...users];
     users2.sort((a,b)=> a.name.first.localeCompare(b.name.first));
-    console.log(users2);
     setUsers(users2);
     //return users2;
   }

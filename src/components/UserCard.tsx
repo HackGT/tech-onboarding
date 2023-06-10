@@ -4,6 +4,7 @@ import {
   HStack,
   Text,
   Button,
+  Link,
   Modal,
     ModalOverlay,
     ModalContent,
@@ -12,8 +13,11 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
+    useFocusEffect,
 } from "@chakra-ui/react";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import { apiUrl, Service } from "@hex-labs/core";
 
 type Props = {
   user: any;
@@ -33,7 +37,64 @@ type Props = {
 // and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
 
 const UserCard: React.FC<Props> = (props: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [hexathonsIds, setHexathonsIds] = useState<any[]>([]);
+  const [userHexathons, setUserHexathons] = useState<any[]>([]);
+  const mailtoURL="mailto:%20"+props.user.email;
+
+  useEffect(()=>{
+    
+    const getAllHexathons = async() =>{
+      const allhexathons = await axios.get(apiUrl(Service.HEXATHONS, `/hexathons`),{
+      });
+      const hexathonsdata = allhexathons.data;
+      //console.log(hexathonsdata);
+      const onlyIds = hexathonsdata.map((d: { id: any; })=>(d.id));
+      console.log(onlyIds);
+      setHexathonsIds(onlyIds);
+      console.log(hexathonsIds);
+    }
+
+    getAllHexathons();
+    
+    const getAppliedForHexathons=async(currentUser: any)=>{
+      var i;
+      for (i=0;i<hexathonsIds.length;i++){
+        const currhexathon = await axios.get(apiUrl(Service.REGISTRATION, `/applications`),{
+          params:{
+            hexathon: hexathonsIds[i],
+            userId: currentUser
+          }
+        });
+        if (currhexathon.data.count>0){
+          setUserHexathons((prevUserHexathons)=>[...prevUserHexathons, currhexathon.data.name]);//add this hexathon's name to the list
+        }
+      }
+      console.log(userHexathons);
+    }
+    getAppliedForHexathons(props.user);
+    
+  }, [props.user]);//run once
+
+  
+  
+  async function getAppliedForHexathons(currentUser: any){
+    var i;
+    for (i=0;i<hexathonsIds.length;i++){
+      const currhexathon = await axios.get(apiUrl(Service.REGISTRATION, `/applications`),{
+        params:{
+          hexathon: hexathonsIds[i],
+          userId: currentUser
+        }
+      });
+      if (currhexathon.data.count>0){
+        setUserHexathons((prevUserHexathons)=>[...prevUserHexathons, currhexathon.data.name]);//add this hexathon's name to the list
+      }
+    }
+    console.log(userHexathons);
+  }
+
+  
 
   return (
     
@@ -70,14 +131,15 @@ const UserCard: React.FC<Props> = (props: Props) => {
           <ModalCloseButton />
           <ModalBody>
             <Text>Phone Number: {`${props.user.phoneNumber}`}</Text>
-            <Text>Email: {`${props.user.email}`}</Text>
+            <Text>Email: <a href = {mailtoURL}>{`${props.user.email}`}</a></Text>
+            <Text> </Text>
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant='ghost'>Secondary Action</Button>
+            <Button variant='ghost'>Get applied to hexathons</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
