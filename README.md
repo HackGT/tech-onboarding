@@ -124,7 +124,7 @@ Now that you have a better understanding of the codebase, it's time to start wor
 
 - [x] `UserData.tsx` Configure the api call to get the user data from the backend api
 - [x] `UserData.tsx` Use the existing api call but add in a filter for only emails containing @hexlabs.org
-- [ ] `UserData.tsx` Add a button that allows you to sort the users by their first name
+- [x] `UserData.tsx` Add a button that allows you to sort the users by their first name
 - [ ] `UserCard.tsx` Create a modal that shows the user's full name, email, and phone number when you click on the user card
 - [ ] `UserCard.tsx` Create a modal that retrieves all of the hexathons that a user has an application for.
 - [ ] `App.tsx` Add the Header and Footer frontend components from our `hexlabs-core` [package](https://frontend.hexlabs.org).
