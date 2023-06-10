@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
 import { SimpleGrid, Text } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
