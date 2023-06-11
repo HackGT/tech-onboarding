@@ -11,7 +11,11 @@ import UserData from './components/UserData';
 
 // a little bee ascii art
 // const art =
-//   ".' '.                             buzz buzz\n.        .   .           (__\\ \n .         .         . -{{_(|8)\n   ' .  . ' ' .  . '     (__/";
+//   ".' '.                             buzz buzz\n
+//.        .   .           (__\\ \n
+// .         .         . -{{_(|8)\n
+//   ' .  . ' ' .  . '     (__/";
+// Tried to fix the art lol
 
 // Initialized the Firebase app through the credentials provided
 export const app = initializeApp({
@@ -50,11 +54,12 @@ export const App = () => {
   // useAuth hook to retrieve the user's login details.
   return (
     <AuthProvider app={app}>
-      
+      <Header children={undefined} />
       {/* Setting up our React Router to route to all the different pages we may have */}
       <Routes>
         <Route path="/" element={<UserData />} />
       </Routes>
+
       <Footer />
     </AuthProvider>
   );
