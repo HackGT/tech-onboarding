@@ -83,12 +83,14 @@ const UserData: React.FC = () => {
 
   return (
     <>
-      <Text fontSize="4xl">Hexlabs Users</Text>
-      <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
+      <Text fontSize="4xl" textAlign="center">Hexlabs Users</Text>
+      <Text fontSize="2xl" textAlign="center">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
 
-      <Button onClick={sortUsersByFirstName}>
-        Sort by First Name {sortOrder === "asc" ? "▲" : "▼"}
-      </Button>
+      <div style={{ textAlign: "center" }}>
+        <Button onClick={sortUsersByFirstName} mt="4">
+          Sort by First Name
+        </Button>
+      </div>
       {/* should display a button with the text "sort by first name" and with appropriate arrows */}
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
@@ -97,7 +99,7 @@ const UserData: React.FC = () => {
         data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
         yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
         { users.map((user) => (
-          <UserCard user={user}/>
+          <UserCard user={user} key={user.id}/>
         ))}
 
       </SimpleGrid>
