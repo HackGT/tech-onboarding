@@ -47,7 +47,6 @@ const UserData: React.FC = () => {
           },
         });
         const filteredResponse = response.data.profiles.filter((student: { email: string | string[]; }) => student.email.includes("@hexlabs.org"))
-        console.log(filteredResponse)
         setUsers(filteredResponse);
       } catch (error) {
         console.error("Error fetching user data:", error);
