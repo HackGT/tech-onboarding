@@ -50,7 +50,7 @@ const UserCard: React.FC<Props> = (props: Props) => {
 
   const handleViewHexathons = async () => {
     try {
-      const response = await axios.get(`/api/applications?userId=${props.user.userID}`);
+      const response = await axios.get(`/api/applications?userId=${props.user.userId}`);
       const applications = response.data.data;
       const hexathonIds = applications.map((application: any) => application.hexathonId);
       const hexathonsResponse = await axios.get(`/api/hexathons?ids=${hexathonIds.join(",")}`);
@@ -98,7 +98,7 @@ const UserCard: React.FC<Props> = (props: Props) => {
               </Link>
             </Text>
             <Text fontSize="sm" fontWeight="semibold">{props.user.phoneNumber}</Text>
-            <Text fontSize="sm" fontWeight="semibold">{`User ID: ${props.user.userID}`}</Text>
+            <Text fontSize="sm" fontWeight="semibold">{`User ID: ${props.user.userId}`}</Text>
             {props.user.resume && (
               <>
                 <Text fontSize="sm" fontWeight="semibold" mt="2">
@@ -123,7 +123,7 @@ const UserCard: React.FC<Props> = (props: Props) => {
                   Applied Hexathons:
                 </Text>
                 {hexathons.map((hexathon: any) => (
-                  <Text key={hexathon.id} fontSize="sm">
+                  <Text key={hexathon.Id} fontSize="sm">
                     {hexathon.name}
                   </Text>
                 ))}
