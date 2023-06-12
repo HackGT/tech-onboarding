@@ -40,17 +40,22 @@ const UserData: React.FC = () => {
       // the raw request response and extracts the actual data that we need from it.
       // setUsers(data?.data?.profiles);
 
-      try {
-        const response = await axios.get(apiUrl(Service.USERS, "/users"), {
-          params: {
-            limit: 100,
-          },
-        });
-        const filteredResponse = response.data.profiles.filter((student: { email: string | string[]; }) => student.email.includes("@hexlabs.org"))
-        setUsers(filteredResponse);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
+      const requestUrl = apiUrl(Service.USERS, "/users");
+      const data = await axios.get(requestUrl, { params: { search: "@hexlabs.org",} });
+      setUsers(data?.data?.profiles);
+
+      
+      // try {
+      //   const response = await axios.get(apiUrl(Service.USERS, "/users"), {
+      //     params: {
+      //       limit: 100,
+      //     },
+      //   });
+      //   const filteredResponse = response.data.profiles.filter((student: { email: string | string[]; }) => student.email.includes("@hexlabs.org"))
+      //   setUsers(filteredResponse);
+      // } catch (error) {
+      //   console.error("Error fetching user data:", error);
+      // }
     };
 
 
