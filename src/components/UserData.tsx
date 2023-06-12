@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { SimpleGrid, Text, Button } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -35,12 +35,14 @@ const UserData: React.FC = () => {
       // Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
 
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
+      const requestUrl = apiUrl(Service.USERS, "/users");
+      // const data = await axios.get(requestUrl);
 
+      const data = await axios.get(requestUrl, { params: { search: "@hexlabs.org", } });
 
-
-      // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
+      // uncomment the line below to test if you ha`ve successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
-      // setUsers(data?.data?.profiles);
+      setUsers(data?.data?.profiles);
     };
     document.title = "Hexlabs Users"
     getUsers();
@@ -53,12 +55,28 @@ const UserData: React.FC = () => {
 
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
-
+  const sortUsers = () => {
+    const sortedUsers = [...users];
+    sortedUsers.sort((user1, user2) => {
+      const name1 = user1.name.first.toLowerCase();
+      const name2 = user2.name.first.toLowerCase();
+      if (name1 < name2) {
+        return -1;
+      } else if (name1 > name2) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    console.log(`sortedUsers: ${JSON.stringify(sortedUsers)}`);
+    setUsers(sortedUsers);
+  }
 
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
       <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
+      <Button onClick={sortUsers}>Sort Users</Button>
 
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>

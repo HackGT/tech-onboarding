@@ -1,10 +1,15 @@
 import {
   Box,
+  Button,
   Flex,
   HStack,
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import UserModal from "./UserModal";
+import HexathonModal from "./HexathonModal";
+import axios from "axios";
+import { apiUrl, Service, Footer } from "@hex-labs/core";
 
 type Props = {
   user: any;
@@ -24,30 +29,69 @@ type Props = {
 // and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
 
 const UserCard: React.FC<Props> = (props: Props) => {
+  const [isInfoOpen, setIsInfoOpen] = React.useState(false);
+  // const [resumeUrl, setResumeUrl] = React.useState("");
+  const showInfoModal = () => {
+      setIsInfoOpen(true);
+  }
+  const closeInfoModal = () => {
+      setIsInfoOpen(false);
+  }
+
+  const [isHexOpen, setIsHexOpen] = React.useState(false);
+  const showHexModal = () => {
+      setIsHexOpen(true);
+  }
+  const closeHexModal = () => {
+      setIsHexOpen(false);
+  }
+
+  // if ('resume' in props.user && isOpen) {
+  //   console.log("resume found");
+  //   const requestUrl = apiUrl(Service.FILES, `/files/${props.user.resume}/view`);
+  //   console.log(`requestUrl: ${requestUrl}`);
+
+  //   axios.get(requestUrl)
+  //   .then((response => {
+  //       console.log("resume retrieved");
+  //       setResumeUrl(response.data);
+  //   }))
+  // }
+
 
   return (
-    <Box
-    borderWidth="1px"
-    rounded="lg"
-    boxShadow="lg"
-    height="175px"
-    fontWeight="bold"
-    alignItems="center"
-    >
-      <Flex padding="2" flexDirection="column">
-        <HStack align="flex-end" justify="space-between">
-          <Text fontSize='xl'>{`${props.user.name.first} ${props.user.name.last}`}</Text>
-        </HStack>
-        <Text
-          fontSize="sm"
-          fontWeight="semibold"
-          justifyContent="justify"
-          mt="2"
-        >
-          {props.user.email}
-        </Text>
-      </Flex>
-    </Box>
+    <>
+      {/* resumeUrl={resumeUrl} */}
+      {isInfoOpen && (<UserModal user={props.user} isOpen={isInfoOpen} onClose={closeInfoModal}></UserModal>)}
+      {isHexOpen && (<HexathonModal user={props.user} isOpen={isHexOpen} onClose={closeHexModal}></HexathonModal>)}
+
+      <Box
+      borderWidth="1px"
+      rounded="lg"
+      boxShadow="lg"
+      height="175px"
+      fontWeight="bold"
+      alignItems="center"
+      >
+        <Flex padding="2" flexDirection="column">
+          <HStack align="flex-end" justify="space-between">
+            <Text fontSize='xl'>{`${props.user.name.first} ${props.user.name.last}`}</Text>
+          </HStack>
+          <Text
+            fontSize="sm"
+            fontWeight="semibold"
+            justifyContent="justify"
+            mt="2"
+          >
+            {props.user.email}
+          </Text>
+          <Flex flexDirection="row">
+            <Button onClick={showInfoModal}>Info</Button>
+            <Button onClick={showHexModal}>Hexathons</Button>
+          </Flex>
+        </Flex>
+      </Box>
+    </>
   );
 };
 
