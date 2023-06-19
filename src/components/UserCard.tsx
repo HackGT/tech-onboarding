@@ -30,6 +30,7 @@ type Props = {
 
 const UserCard: React.FC<Props> = (props: Props) => {
   const [isInfoOpen, setIsInfoOpen] = React.useState(false);
+  const [appliedHexs, setAppliedHexs] = React.useState<string[]>([]);
   // const [resumeUrl, setResumeUrl] = React.useState("");
   const showInfoModal = () => {
       setIsInfoOpen(true);
@@ -58,12 +59,47 @@ const UserCard: React.FC<Props> = (props: Props) => {
   //   }))
   // }
 
+  const addItem = (item: string) => {
+    setAppliedHexs(prevList => [...prevList, item]);
+  };
+  
+  React.useEffect(() => {
+    const viewHexathons = async () => {
+      var requestUrl = apiUrl(Service.HEXATHONS, 'hexathons');
+      var response = await axios.get(requestUrl);
+      const hexathons = response.data;
+      for (var hexathon of hexathons) {
+        const hexathonId = hexathon.id;
+        requestUrl = apiUrl(Service.REGISTRATION, `applications`);
+        response = await axios.get(requestUrl, { params: { hexathon: hexathonId, userId: props.user.userId} });
+        const applications = response.data;
+        // console.log(applications);
+        if (applications.total != 0) {
+          setAppliedHexs([...appliedHexs, hexathon.name]);
+          // console.log(appliedHexs);
+        }
+        // const userIds: string[] = applications.map((obj: any) => obj.userId);
+        // console.log(`userIds: ${JSON.stringify(userIds)}`);
+        // const requestUrl1 = apiUrl(Service.USERS, `users/${props.user.userId}`);
+        // const response1 = await axios.get(requestUrl1);
+        // console.log(`${response1.data.name.first} ${response1.data.name.last} : ${props.user.userId}`);
+        // if (props.user.userId in userIds) {
+        //   setAppliedHexs([...appliedHexs, hexathon.name]);
+          // console.log(appliedHexs);
+        // }
+        // break;
+      }
+    }
+    viewHexathons();
+  }, []);
+
+
 
   return (
     <>
       {/* resumeUrl={resumeUrl} */}
       {isInfoOpen && (<UserModal user={props.user} isOpen={isInfoOpen} onClose={closeInfoModal}></UserModal>)}
-      {isHexOpen && (<HexathonModal user={props.user} isOpen={isHexOpen} onClose={closeHexModal}></HexathonModal>)}
+      {isHexOpen && (<HexathonModal user={props.user} isOpen={isHexOpen} onClose={closeHexModal} applied={appliedHexs}></HexathonModal>)}
 
       <Box
       borderWidth="1px"
