@@ -68,8 +68,8 @@ const UserData: React.FC = () => {
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
   const sortUsersByFirstName = () => {
     const sortedUsers = [...users].sort((a, b) => {
-      const nameA = a.firstName.toUpperCase();
-      const nameB = b.firstName.toUpperCase();
+      const nameA = (a.firstName || "").toUpperCase();
+      const nameB = (b.firstName || "").toUpperCase();
       if (nameA < nameB) {
         return -1;
       }
