@@ -1,9 +1,16 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, 
+  Flex, 
+  HStack, 
+  Link, 
+  Text, 
+  Modal, 
+  ModalOverlay, 
+  ModalContent, 
+  ModalHeader, 
+  ModalCloseButton, 
+  ModalBody, 
+  useDisclosure } 
+from "@chakra-ui/react";
 import React from "react";
 
 type Props = {

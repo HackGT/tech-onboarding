@@ -48,12 +48,11 @@ export const App = () => {
   // useAuth hook to retrieve the user's login details.
   return (
     <AuthProvider app={app}>
-      <Header></Header>
+      <Header children={undefined} />
       {/* Setting up our React Router to route to all the different pages we may have */}
       <Routes>
         <Route path="/" element={<UserData />} />
       </Routes>
-      <Footer></Footer>
     </AuthProvider>
   );
 };
