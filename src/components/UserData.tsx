@@ -35,7 +35,7 @@ const UserData: React.FC = () => {
 	      const data = response.data;
 	      // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
         // the raw request response and extracts the actual data that we need from it.
-	      setUsers(data?.data?.profiles);
+	      setUsers(data?.profiles);
 	    } catch (error) {
 	      console.error('Error fetching users:', error);
 	    }
@@ -50,7 +50,7 @@ const UserData: React.FC = () => {
 	      const data = response.data;
 	      // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
         // the raw request response and extracts the actual data that we need from it.
-        setUsers(data?.data?.profiles);
+        setUsers(data?.profiles);
       } catch (error) {
 	      console.error("Error fetching users:", error);
 	    }
