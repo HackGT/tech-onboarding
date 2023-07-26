@@ -42,7 +42,11 @@ To install Yarn, go [here](https://classic.yarnpkg.com/en/docs/install). After i
 
 ### MongoDB Compass
 
-MongoDB Compass is a GUI for your database that allows you to easily interact with it and view data. Download it [here](https://www.mongodb.com/try/download/compass)
+MongoDB Compass is a GUI for your MongoDB database that allows you to easily interact with it and view data. Download it [here](https://www.mongodb.com/try/download/compass)
+
+### Postico
+
+Postico is a GUI for your Postgres database that allows you to view/edit data similar to MongoDB Compass. Download it [here](https://eggerapps.at/postico2/) (Note, it's only available for Mac). On windows, you can use [pgAdmin](https://www.pgadmin.org/).
 
 ### VSCode
 
