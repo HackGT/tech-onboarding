@@ -44,6 +44,10 @@ To install Yarn, go [here](https://classic.yarnpkg.com/en/docs/install). After i
 
 MongoDB Compass is a GUI for your MongoDB database that allows you to easily interact with it and view data. Download it [here](https://www.mongodb.com/try/download/compass)
 
+### Postgres
+
+PostgreSQL is a structured database that we use in some of our projects. To install Postgres, use the command `brew install postgresql@14` if on Mac or follow the instructions [here](https://www.postgresql.org/download). Check that it's installed by running `psql --version`.
+
 ### Postico
 
 Postico is a GUI for your Postgres database that allows you to view/edit data similar to MongoDB Compass. Download it [here](https://eggerapps.at/postico2/) (Note, it's only available for Mac). On windows, you can use [pgAdmin](https://www.pgadmin.org/).
@@ -89,6 +93,10 @@ On most coding projects, you'll likely be using a wide number of tools, framewor
 
 - MongoDB tutorial [https://www.freecodecamp.org/news/learn-mongodb-a4ce205e7739/](https://www.freecodecamp.org/news/learn-mongodb-a4ce205e7739/)
 - Mongoose introduction [https://www.freecodecamp.org/news/introduction-to-mongoose-for-mongodb-d2a7aa593c57/](https://www.freecodecamp.org/news/introduction-to-mongoose-for-mongodb-d2a7aa593c57/)
+
+### Postgres and Postico
+- Postgres CLI commands and tutorial [https://www.postgresql.org/docs/14/tutorial-start.html](https://www.postgresql.org/docs/14/tutorial-start.html)
+- Postgres Connection Strings [StackOverflow Link](https://stackoverflow.com/a/52718093)
 
 ## Setup
 
