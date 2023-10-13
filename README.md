@@ -48,6 +48,8 @@ MongoDB Compass is a GUI for your MongoDB database that allows you to easily int
 
 PostgreSQL is a structured database that we use in some of our projects. To install Postgres, use the command `brew install postgresql@14` if on Mac or follow the instructions [here](https://www.postgresql.org/download). Check that it's installed by running `psql --version`.
 
+After it's installed, run `brew services start postgresql@14` to start postgres. You can verify that Postgres is running in Postico by testing your connection to `localhost:5432`
+
 ### Postico
 
 Postico is a GUI for your Postgres database that allows you to view/edit data similar to MongoDB Compass. Download it [here](https://eggerapps.at/postico2/) (Note, it's only available for Mac). On windows, you can use [pgAdmin](https://www.pgadmin.org/).
