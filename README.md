@@ -145,4 +145,4 @@ Now that you have a better understanding of the codebase, it's time to start wor
 
 Side note: Use the [chakra-ui](https://chakra-ui.com/getting-started) package for frontend components you'd like to use, like buttons for instance - we use Chakra UI extensively on the frontend.
 
-Note that the last two tasks are a bit more difficult than the others! Don't be afraid to reach out to the tech directors for help if you feel stuck at any point! Additionally, feel free to put your own creative spin on the project. If you have any ideas for cool features, feel free to implement them!
+Note that the last two tasks are a bit more difficult than the others! Feel free to put your own creative spin on the project. If you have any ideas for cool features, feel free to implement them!
