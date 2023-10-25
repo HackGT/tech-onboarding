@@ -32,11 +32,12 @@ const UserData: React.FC = () => {
       // the Service enum and the following specific endpoint URL.
 
       // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
-      // Try to filter all the users by @hexlabs.org emails or increase the amount of users returned from the default 50.
+      // Try to filter all the users with phone numbers starting with 470 or increase the amount of users returned from the default 50 (don't go above 100).
 
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
 
-
+      // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
+      const URL = 'https://users.api.hexlabs.org/users/hexlabs';
 
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
