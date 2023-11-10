@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { Button, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
+
 
 const UserData: React.FC = () => {
 
@@ -39,9 +40,19 @@ const UserData: React.FC = () => {
       // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
       const URL = 'https://users.api.hexlabs.org/users/hexlabs';
 
+      const requestURL = apiUrl(Service.USERS, '/users');
+
+      const data = await axios.get(requestURL, {
+        params: {
+          search: '^470',
+          limit: 75,
+        },
+      });
+      
+
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
-      // setUsers(data?.data?.profiles);
+      setUsers(data?.data?.profiles);
     };
     document.title = "Hexlabs Users"
     getUsers();
@@ -54,14 +65,28 @@ const UserData: React.FC = () => {
 
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
-
+  const sortUsers = () => {
+    const sortedUsers = [...users].sort((a, b) => {
+      const aFirstName = a.name.first.toLowerCase();
+      const bFirstName = b.name.first.toLowerCase();
+  
+      if (aFirstName < bFirstName) {
+        return -1;
+      }
+      if (aFirstName > bFirstName) {
+        return 1;
+      }
+      return 0;
+    });
+    setUsers(sortedUsers);
+  };
 
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
       <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
 
-
+      <Button onClick={sortUsers}>Sort by First Name</Button>
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
 
         {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
