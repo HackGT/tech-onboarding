@@ -3,7 +3,6 @@ import { apiUrl, Service } from "@hex-labs/core";
 import { SimpleGrid, Text, Button } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
-console.log("hi")
 const UserData: React.FC = () => {
 
   // The useState hook is used to store state in a functional component. The
@@ -50,9 +49,7 @@ const UserData: React.FC = () => {
       // }
       // , {params:{phoneNumber: {$regex: '^470'}, limit: 100}}
       try {
-        console.log("entered")
         const url = apiUrl(Service.USERS, '/users/hexlabs');
-        console.log(url)
         const users = await axios.get(url)
         console.log(users)
         setUsers(users?.data);
@@ -86,8 +83,7 @@ const UserData: React.FC = () => {
     setUsers(sortedUsers);
     console.log(sortedUsers); // Log the users data to the console
   };
-  console.log("hi part 2")
-  console.log(users)
+  
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
