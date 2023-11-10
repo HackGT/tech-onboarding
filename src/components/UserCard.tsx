@@ -42,6 +42,7 @@ type Props = {
 const UserCard: React.FC<Props> = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hexathons, setHexathons] = useState<any[]>([]);
+  const [showHexathons, setShowHexathons] = useState(false);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -50,6 +51,7 @@ const UserCard: React.FC<Props> = (props: Props) => {
   const handleCloseModal = () => {
     setIsOpen(false);
   }
+  
 
   const handleClickonEmail = () => {
     window.open(`mailto:${props.user.email}`);
@@ -58,6 +60,7 @@ const UserCard: React.FC<Props> = (props: Props) => {
 
 
   const handleViewHexathons = async () => {
+    setShowHexathons(true);
     try {
       const response = await axios.get(`/api/applications?userId=${props.user.userId}`);
       const applications = response.data.data;
@@ -65,6 +68,9 @@ const UserCard: React.FC<Props> = (props: Props) => {
       const hexathonsResponse = await axios.get(`/api/hexathons?ids=${hexathonIds.join(",")}`);
       const userHexathons = hexathonsResponse.data.data;
       setHexathons(userHexathons);
+      console.log("hexathons")
+      console.log(userHexathons)
+
     } catch (error) {
       console.error("Error fetching user hexathons:", error);
     }
@@ -127,41 +133,47 @@ const UserCard: React.FC<Props> = (props: Props) => {
                 {props.user.email}
               </Link>
             </Text>
-            <Text fontSize="sm" fontWeight="semibold">{props.user.phoneNumber}</Text>
-            <Text fontSize="sm" fontWeight="semibold">{`User ID: ${props.user.userId}`}</Text>
-            {props.user.resume && (
-              <>
-                <Text fontSize="sm" fontWeight="semibold" mt="2">
-                  <Link
-                    color="blue.500"
-                    href={props.user.resume}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    textDecoration="underline"
-                  >
-                    View Resume
-                  </Link>
-                </Text>
-                <Button mt="4" colorScheme="blue" onClick={handleViewHexathons}>
-                  View Applied Hexathons
-                </Button>
-              </>
-            )}
-            {hexathons.length > 0 && (
-              <>
-                <Text fontSize="lg" fontWeight="bold" mt="4">
-                  Applied Hexathons:
-                </Text>
-                {hexathons.map((hexathon: any) => (
-                  <Text key={hexathon.Id} fontSize="sm">
-                    {hexathon.name}
-                  </Text>
-                ))}
-              </>
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+            <Text fontSize="sm" fontWeight="semibold" mt="2">
+        {props.user.resume ? (
+          <Link
+            color="blue.500"
+            href={props.user.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            textDecoration="underline"
+          >
+            View Resume
+          </Link>
+        ) : (
+          'No resume available'
+        )}
+      </Text>
+      
+      <Button mt="4" colorScheme="blue" onClick={handleViewHexathons}>
+  View Applied Hexathons
+</Button>
+
+{showHexathons && (
+  hexathons.length > 0 ? (
+    <>
+      <Text fontSize="lg" fontWeight="bold" mt="4">
+        Applied Hexathons:
+      </Text>
+      {hexathons.map((hexathon: any) => (
+        <Text key={hexathon.Id} fontSize="sm">
+          {hexathon.name}
+        </Text>
+      ))}
+    </>
+  ) : (
+    <Text fontSize="sm" mt="4">
+      No applied hexathons
+    </Text>
+  )
+)}
+    </ModalBody>
+  </ModalContent>
+</Modal>
     </>
   );
 };
