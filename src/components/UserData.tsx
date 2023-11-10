@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text, Button } from "@chakra-ui/react";
+import { SimpleGrid, Text, Button, Container, Heading, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 const UserData: React.FC = () => {
@@ -83,26 +83,26 @@ const UserData: React.FC = () => {
     setUsers(sortedUsers);
     console.log(sortedUsers); // Log the users data to the console
   };
-  
+
   return (
-    <>
-      <Text fontSize="4xl">Hexlabs Users</Text>
-      <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
+    <Container maxW="container.xl" centerContent p={8}>
+      <VStack spacing={8} align="stretch">
+        <Heading as="h1" size="2xl" textAlign="center">Hexlabs Users</Heading>
+        <Text fontSize="xl" textAlign="center">
+          This is an example of a page that makes an API call to the Hexlabs API to get a list of users.
+        </Text>
 
-      <Button onClick={sortUsersByFirstName}>Sort Users By First Name </Button>
+        <Button colorScheme="blue" onClick={sortUsersByFirstName}>
+          Sort Users By First Name
+        </Button>
 
-      <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
-
-        {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
-        data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
-        yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
-        { users.map((user) => (
-          <UserCard user={user} />
-        ))}
-        
-
-      </SimpleGrid>
-    </>
+        <SimpleGrid columns={[1, 2, 3]} spacing={8} w="full">
+          {users.map((user) => (
+            <UserCard key={user.userId} user={user} />
+          ))}
+        </SimpleGrid>
+      </VStack>
+    </Container>
   );
 };
 

@@ -1,8 +1,12 @@
 import {
   Box,
   Flex,
+  Stack,
+  VStack,
   HStack,
+  Avatar,
   Text,
+  useColorModeValue,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -11,9 +15,11 @@ import {
   ModalCloseButton,
   Link,
   Button,
+  Badge
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
+import { EmailIcon, PhoneIcon, InfoIcon } from '@chakra-ui/icons';
 
 
 type Props = {
@@ -48,6 +54,8 @@ const UserCard: React.FC<Props> = (props: Props) => {
   const handleClickonEmail = () => {
     window.open(`mailto:${props.user.email}`);
   }
+  const cardBackground = useColorModeValue('gray.100', 'gray.700');
+
 
   const handleViewHexathons = async () => {
     try {
@@ -65,25 +73,46 @@ const UserCard: React.FC<Props> = (props: Props) => {
   return (
     <>
       <Box
+        bg={cardBackground}
+        maxW="sm"
         borderWidth="1px"
         rounded="lg"
-        boxShadow="lg"
-        height="175px"
-        fontWeight="bold"
-        alignItems="center"
+        shadow="md"
+        position="relative"
+        _hover={{ shadow: "lg" }}
         onClick={handleOpenModal}
         cursor="pointer"
       >
-        <Flex padding="2" flexDirection="column">
-          <HStack align="flex-end" justify="space-between">
-            <Text fontSize="xl">{`${props.user.name.first} ${props.user.name.last}`}</Text>
-          </HStack>
-          <Text fontSize="sm" fontWeight="semibold" justifyContent="justify" mt="2">
-            <Link color="blue.500" textDecoration="underline" onClick={() => handleClickonEmail()}>
+        <Avatar
+          size="xl"
+          name={`${props.user.name.first} ${props.user.name.last}`}
+          src={props.user.avatarUrl} // Assuming you have an avatar URL
+          mt={-6}
+          ml={7}
+          mb={4}
+          borderWidth="4px"
+          borderColor="white"
+        />
+        <Stack spacing={1} p={4}>
+          <Text fontWeight="bold" fontSize="lg" align="center">
+            {`${props.user.name.first} ${props.user.name.last}`}
+          </Text>
+          <Stack direction="row" align="center" justify="center">
+            <EmailIcon mr={2} />
+            <Link href={`mailto:${props.user.email}`} isExternal>
               {props.user.email}
             </Link>
-          </Text>
-        </Flex>
+          </Stack>
+          <Stack direction="row" align="center" justify="center">
+            <PhoneIcon mr={2} />
+            <Text>{props.user.phoneNumber}</Text>
+          </Stack>
+          <Flex justify="center">
+            <Badge px={2} py={1} colorScheme="green">
+              {props.user.status || 'Active'} {/* Assuming you have a status field */}
+            </Badge>
+          </Flex>
+        </Stack>
       </Box>
 
       <Modal isOpen={isOpen} onClose={handleCloseModal} size="md">
