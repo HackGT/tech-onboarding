@@ -88,9 +88,6 @@ const UserData: React.FC = () => {
     <Container maxW="container.xl" centerContent p={8}>
       <VStack spacing={8} align="stretch">
         <Heading as="h1" size="2xl" textAlign="center">Hexlabs Users</Heading>
-        <Text fontSize="xl" textAlign="center">
-          This is an example of a page that makes an API call to the Hexlabs API to get a list of users.
-        </Text>
 
         <Button colorScheme="blue" onClick={sortUsersByFirstName}>
           Sort Users By First Name
