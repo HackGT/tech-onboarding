@@ -3,7 +3,7 @@ import { apiUrl, Service } from "@hex-labs/core";
 import { SimpleGrid, Text, Button } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
-
+console.log("hi")
 const UserData: React.FC = () => {
 
   // The useState hook is used to store state in a functional component. The
@@ -38,21 +38,24 @@ const UserData: React.FC = () => {
 
       // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
       // const URL = 'https://users.api.hexlabs.org/users/hexlabs';
+      // try {
+      //   console.log("entered")
+      //   const url = apiUrl(Service.USERS, '/users');
+      //   console.log(url)
+      //   const users = await axios.get(url);
+      //   console.log(users);
+      //   setUsers(users?.data?.profiles);
+      // } catch (error) {
+      //   console.error('Failed to fetch users:', error);
+      // }
+      // , {params:{phoneNumber: {$regex: '^470'}, limit: 100}}
       try {
-        const url = apiUrl(Service.USERS, '/users');
-        const response = await axios.get(url);
-        const users = await response.data;
-        setUsers(users?.profiles);
-      } catch (error) {
-        console.error('Failed to fetch users:', error);
-      }
-      try {
-        const url = apiUrl(Service.USERS, '/users');
-        const filters = {phoneNumber: {$regex: '^470'}, limit: 100}
-        const response = await axios.get(url, {params: filters})
-        const users = await response.data;
-        console.log(users);
-        setUsers(users?.profiles);
+        console.log("entered")
+        const url = apiUrl(Service.USERS, '/users/hexlabs');
+        console.log(url)
+        const users = await axios.get(url)
+        console.log(users)
+        setUsers(users?.data);
       } catch (error) {
         console.error("Failed to fetch users:", error);
       }
@@ -83,8 +86,8 @@ const UserData: React.FC = () => {
     setUsers(sortedUsers);
     console.log(sortedUsers); // Log the users data to the console
   };
-
- 
+  console.log("hi part 2")
+  console.log(users)
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
@@ -100,6 +103,7 @@ const UserData: React.FC = () => {
         { users.map((user) => (
           <UserCard user={user} />
         ))}
+        
 
       </SimpleGrid>
     </>
