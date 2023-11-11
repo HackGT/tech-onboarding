@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { SimpleGrid, Text, Button } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -59,12 +59,32 @@ const UserData: React.FC = () => {
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
 
+  const sortUsers = () => {
+    setUsers(currUsers => {
+      const ret = [...currUsers]
+
+      ret.sort((a, b) => {
+          if (a.name.first > b.name.first) {
+            return 1;
+          } else if (a.name.first < b.name.first) {
+            return -1;
+          }
+          
+          return 0;
+        }
+      )
+
+      return ret
+      }
+    )
+  }
 
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
       <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
 
+      <Button onClick={sortUsers}>Sort users by first name</Button>
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
 
