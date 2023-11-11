@@ -37,11 +37,13 @@ const UserData: React.FC = () => {
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
 
       // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
-      const URL = 'https://users.api.hexlabs.org/users/hexlabs';
+      const url = apiUrl(Service.USERS, "/users/hexlabs")
+
+      const data = await axios.get(url)
 
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
-      // setUsers(data?.data?.profiles);
+      setUsers(data?.data)
     };
     document.title = "Hexlabs Users"
     getUsers();
