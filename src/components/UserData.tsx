@@ -39,11 +39,13 @@ const UserData: React.FC = () => {
       // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
       const url = apiUrl(Service.USERS, "/users/hexlabs")
 
+      // there is no way to send filters to the backend route,
+      // so we have to filter client-side
       const data = await axios.get(url)
 
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
-      setUsers(data?.data)
+      setUsers(data?.data.filter((profile: any) => profile.phoneNumber?.startsWith("470")))
     };
     document.title = "Hexlabs Users"
     getUsers();
