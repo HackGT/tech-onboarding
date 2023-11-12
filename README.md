@@ -104,7 +104,7 @@ On most coding projects, you'll likely be using a wide number of tools, framewor
 
 ### Git
 
-Before developing this onboarding project, fork the repositiory and clone the forked repository to your local device. Then you should be able to work on the project from there. As you develop, push your changes to your forked branch. Once you're done with the project, create a pull request with your name followed by "onboarding project" like `Phillip Phanhthourath Onboarding Project`.
+Before developing this onboarding project, fork the repositiory and clone the forked repository to your local device. Then you should be able to work on the project from there. As you develop, push your changes to your forked branch. Once you're done with the project, create a pull request with your name followed by "onboarding project" such as `Phillip Phanhthourath Onboarding Project`.
 
 If you are still confused about this process, use this link as a resource: [Contributing to projects](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
 
