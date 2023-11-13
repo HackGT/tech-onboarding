@@ -1,6 +1,6 @@
 # HackGT Tech Onboarding
 
-Welcome to the HackGT tech onboarding project. This will serve as an introduction to TypeScript/JavaScript, Node.js, MongoDB, and React.
+Welcome to the HackGT tech onboarding project. This will serve as an optional part of your application as well as an introduction to TypeScript/JavaScript, Node.js, MongoDB, and React.
 
 This README has the following sections:
 
@@ -104,7 +104,9 @@ On most coding projects, you'll likely be using a wide number of tools, framewor
 
 ### Git
 
-When developing this onboarding project, please make a new branch with your first name, and use that branch for development. For example, make a branch with `git branch rahul`, and check it out with `git checkout rahul`. As you make commits, you can push to the repo with `git push`.
+Before developing this onboarding project, fork the repositiory and clone the forked repository to your local device. Then you should be able to work on the project from there. As you develop, push your changes to your forked branch. Once you're done with the project, create a pull request with your name followed by "onboarding project" such as `Phillip Phanhthourath Onboarding Project`.
+
+If you are still confused about this process, use this link as a resource: [Contributing to projects](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
 
 **Important** Please do not push any commits on the main branch, only push commits on your specific branch!
 
