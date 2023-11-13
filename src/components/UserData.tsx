@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { SimpleGrid, Text, Button, Container, Heading, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
-
 const UserData: React.FC = () => {
 
   // The useState hook is used to store state in a functional component. The
@@ -37,7 +36,26 @@ const UserData: React.FC = () => {
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
 
       // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
-      const URL = 'https://users.api.hexlabs.org/users/hexlabs';
+      // const URL = 'https://users.api.hexlabs.org/users/hexlabs';
+      // try {
+      //   console.log("entered")
+      //   const url = apiUrl(Service.USERS, '/users');
+      //   console.log(url)
+      //   const users = await axios.get(url);
+      //   console.log(users);
+      //   setUsers(users?.data?.profiles);
+      // } catch (error) {
+      //   console.error('Failed to fetch users:', error);
+      // }
+      // , {params:{phoneNumber: {$regex: '^470'}, limit: 100}}
+      try {
+        const url = apiUrl(Service.USERS, '/users/hexlabs');
+        const users = await axios.get(url)
+        console.log(users)
+        setUsers(users?.data);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
 
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
@@ -54,25 +72,34 @@ const UserData: React.FC = () => {
 
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
-
+  const sortUsersByFirstName = () => {
+    const sortedUsers = [...users].sort((a, b) => {
+      const aName = a.name.first.toLowerCase();
+      const bName = b.name.first.toLowerCase();
+      if (aName < bName) { return -1; }
+      else if (aName > bName) { return 1; }
+      else { return 0; }
+    });
+    setUsers(sortedUsers);
+    console.log(sortedUsers); // Log the users data to the console
+  };
 
   return (
-    <>
-      <Text fontSize="4xl">Hexlabs Users</Text>
-      <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
+    <Container maxW="container.xl" centerContent p={8}>
+      <VStack spacing={8} align="stretch">
+        <Heading as="h1" size="2xl" textAlign="center">Hexlabs Users</Heading>
 
+        <Button colorScheme="blue" onClick={sortUsersByFirstName}>
+          Sort Users By First Name
+        </Button>
 
-      <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
-
-        {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
-        data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
-        yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
-        { users.map((user) => (
-          <UserCard user={user} />
-        ))}
-
-      </SimpleGrid>
-    </>
+        <SimpleGrid columns={[1, 2, 3]} spacing={8} w="full">
+          {users.map((user) => (
+            <UserCard key={user.userId} user={user} />
+          ))}
+        </SimpleGrid>
+      </VStack>
+    </Container>
   );
 };
 
