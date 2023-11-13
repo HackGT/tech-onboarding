@@ -1,11 +1,11 @@
 /* eslint-disable */
 import React from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { setPersistence, getAuth, inMemoryPersistence } from "firebase/auth";
-import { useLogin, LoadingScreen, AuthProvider } from "@hex-labs/core";
+import { useLogin, LoadingScreen, AuthProvider, Header, HeaderItem, Footer } from "@hex-labs/core";
 
 import UserData from './components/UserData';
 
@@ -50,9 +50,17 @@ export const App = () => {
     <AuthProvider app={app}>
 
       {/* Setting up our React Router to route to all the different pages we may have */}
+      <Header>
+        <HeaderItem>
+          <Link to="/">Home</Link>
+        </HeaderItem>
+      </Header>
+
       <Routes>
         <Route path="/" element={<UserData />} />
       </Routes>
+
+      <Footer />
 
     </AuthProvider>
   );
