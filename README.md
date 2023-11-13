@@ -1,6 +1,6 @@
 # HackGT Tech Onboarding
 
-Welcome to the HackGT tech onboarding project. This will serve as an introduction to TypeScript/JavaScript, Node.js, MongoDB, and React.
+Welcome to the HackGT tech onboarding project. This will serve as an optional part of your application as well as an introduction to TypeScript/JavaScript, Node.js, MongoDB, and React.
 
 This README has the following sections:
 
