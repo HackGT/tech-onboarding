@@ -39,7 +39,12 @@ const UserCard: React.FC<Props> = ({ user }) => {
   };
 
   // UserModal component definition
-  const UserModal = ({ isOpen, onClose }) => (
+  type UserModalProps = {
+    isOpen: boolean;
+    onClose: () => void;
+  };
+
+  const UserModal = ({ isOpen, onClose }: UserModalProps) => (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>

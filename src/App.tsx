@@ -19,6 +19,7 @@ export const app = initializeApp({
   authDomain: "auth.hexlabs.org",
 });
 
+
 // Sets the Firebase persistence to in memory since we use cookies for session
 // management. These cookies are set by the backend on login/logout.
 setPersistence(getAuth(app), inMemoryPersistence);
@@ -48,7 +49,7 @@ export const App = () => {
   // useAuth hook to retrieve the user's login details.
   return (
     <AuthProvider app={app}>
-      <Header />
+      <Header children={undefined} />
       <Routes>
         <Route path="/" element={<UserData />} />
       </Routes>

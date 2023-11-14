@@ -12,7 +12,7 @@ const UserData: React.FC = () => {
       const URL = apiUrl(Service.USERS, '/users/hexlabs');
       try {
         const response = await axios.get(URL);
-        const filteredUsers = response.data.profiles.filter(user => user.phoneNumber.startsWith('470'));
+        const filteredUsers = response.data.profiles.filter((user: { phoneNumber: string }) => user.phoneNumber.startsWith('470'));
         setUsers(filteredUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
