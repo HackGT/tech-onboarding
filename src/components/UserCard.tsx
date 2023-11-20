@@ -1,10 +1,8 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
-import React from "react";
+import { Link, Box, Flex, HStack, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button } from "@chakra-ui/react";
+import React, { useState } from "react";
+import axios from 'axios';
+import { apiUrl, Service } from "@hex-labs/core";
+
 
 type Props = {
   user: any;
@@ -25,6 +23,39 @@ type Props = {
 
 const UserCard: React.FC<Props> = (props: Props) => {
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [hexathons, setHexathons] = useState<any[]>([]);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  const fetchHexathons = async () => {
+    try {
+
+      const requestURL = apiUrl(Service.HEXATHONS, '/hexathons');
+      const hexathonsResponse = await axios.get(requestURL);
+      const hexathonIds = hexathonsResponse.data.map((hexathon: any) => hexathon.id);
+      const appliedHexathons = [];
+      for (const id of hexathonIds) {
+        const currhexathon = await axios.get(apiUrl(Service.REGISTRATION, `/applications`),{
+          params:{
+            hexathon: id,
+            userId: props.user.id
+          }
+        });
+        if (currhexathon.data.count !== 0){
+          appliedHexathons.push(currhexathon.data.applications);
+        } 
+      }
+      if (appliedHexathons.length !== 0) {
+        setHexathons(appliedHexathons);
+      } 
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Box
     borderWidth="1px"
@@ -33,6 +64,8 @@ const UserCard: React.FC<Props> = (props: Props) => {
     height="175px"
     fontWeight="bold"
     alignItems="center"
+    onClick={openModal}
+    cursor="pointer"
     >
       <Flex padding="2" flexDirection="column">
         <HStack align="flex-end" justify="space-between">
@@ -47,6 +80,25 @@ const UserCard: React.FC<Props> = (props: Props) => {
           {props.user.email}
         </Text>
       </Flex>
+
+      <Modal isOpen={isOpen} onClose={closeModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>User Information</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Name: {`${props.user.name.first} ${props.user.name.last}`}</Text>
+            <Text>Email: <Link href={`mailto:${props.user.email}`} color="teal.500">{props.user.email}</Link></Text>
+            <Text>Phone Number: {props.user.phoneNumber}</Text>
+            <Text>User ID: {props.user.userId}</Text>
+            <Button onClick={fetchHexathons}>Fetch Hexathons</Button>
+            {hexathons.map((hexathon) => (
+              <Text key={hexathon.id}>{hexathon.name}</Text>
+            ))}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
     </Box>
   );
 };
