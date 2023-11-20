@@ -1,6 +1,7 @@
 import { Link, Box, Flex, HStack, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import axios from 'axios';
+import { apiUrl, Service } from "@hex-labs/core";
 
 
 type Props = {
@@ -30,11 +31,26 @@ const UserCard: React.FC<Props> = (props: Props) => {
 
   const fetchHexathons = async () => {
     try {
-      const applicationsResponse = await axios.get(`/api/applications?userId=${props.user.userId}`);
-      const applications = applicationsResponse.data.data;
-      const hexathonIds = applications.map((application: any) => application.hexathonId);
-      const hexathonsResponse = await axios.get(`/api/hexathons?ids=${hexathonIds.join(",")}`);
-      setHexathons(hexathonsResponse.data.data);
+
+      const requestURL = apiUrl(Service.HEXATHONS, '/hexathons');
+      const hexathonsResponse = await axios.get(requestURL);
+      const hexathonIds = hexathonsResponse.data.map((hexathon: any) => hexathon.id);
+      const appliedHexathons = [];
+      for (const id of hexathonIds) {
+        const currhexathon = await axios.get(apiUrl(Service.REGISTRATION, `/applications`),{
+          params:{
+            hexathon: id,
+            userId: props.user.id
+          }
+        });
+        if (currhexathon.data.count !== 0){
+          appliedHexathons.push(currhexathon.data.applications);
+        } 
+      }
+      if (appliedHexathons.length !== 0) {
+        setHexathons(appliedHexathons);
+      } 
+      
     } catch (error) {
       console.error(error);
     }
