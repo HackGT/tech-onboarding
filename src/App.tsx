@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { setPersistence, getAuth, inMemoryPersistence } from "firebase/auth";
-import { useLogin, LoadingScreen, AuthProvider } from "@hex-labs/core";
+import { useLogin, LoadingScreen, AuthProvider, Header, Footer } from "@hex-labs/core";
 
 import UserData from './components/UserData';
 
@@ -47,6 +47,10 @@ export const App = () => {
   // Sets up the AuthProvider so that any part of the application can use the
   // useAuth hook to retrieve the user's login details.
   return (
+    <>
+    <Header>
+
+    </Header>
     <AuthProvider app={app}>
 
       {/* Setting up our React Router to route to all the different pages we may have */}
@@ -55,6 +59,9 @@ export const App = () => {
       </Routes>
 
     </AuthProvider>
+
+    <Footer />
+    </>
   );
 };
 
