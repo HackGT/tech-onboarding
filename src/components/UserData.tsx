@@ -29,7 +29,9 @@ const UserData: React.FC = () => {
   const [clickedUser, setClickedUser] = useState<any>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [areUsersAscending, setAreUsersAscending] = useState<boolean>(true);
-  const [selectedUserHackathons, setSelectedUserHackathons] = useState<any>();
+  const [selectedUserHackathons, setSelectedUserHackathons] = useState<any[]>(
+    []
+  );
 
   // The useEffect hook basicaly runs the code inside of it when the component
   // mounts. This is useful for making API calls and other things that should
@@ -64,7 +66,6 @@ const UserData: React.FC = () => {
 
       try {
         const data: AxiosResponse = await axios.get(api);
-        console.log(data);
 
         const filteredData = data?.data.filter((person: any) =>
           person.phoneNumber?.startsWith("470")
@@ -100,13 +101,14 @@ const UserData: React.FC = () => {
   const handleOnModalClose = () => {
     setShowModal(false);
     setClickedUser(null);
-    setSelectedUserHackathons(null);
+    setSelectedUserHackathons([]);
   };
 
   const handleOnUserClicked = async (user: any) => {
     try {
       const hexathonsApi = apiUrl(Service.HEXATHONS, "hexathons");
       const hexathonsResponse = await axios.get(hexathonsApi);
+      const hexathons: any[] = [];
       hexathonsResponse?.data.forEach(async (hexathon: any) => {
         const registrationApi = apiUrl(
           Service.HEXATHONS,
@@ -120,22 +122,20 @@ const UserData: React.FC = () => {
         }
 
         if (hexathonsResponse?.status === 200) {
-          setSelectedUserHackathons(hexathon.name);
+          setSelectedUserHackathons((prevState: any) => [
+            ...prevState,
+            hexathon.name,
+          ]);
         }
       });
     } catch (error: any) {
       console.log(error);
     }
 
+    console.log(selectedUserHackathons);
+
     setClickedUser(user);
     setShowModal(true);
-  };
-
-  const fetchHexathons = () => {
-    // console.log(apiUrl(Service.USERS, URL));
-    // console.log(apiUrl(Service.AUTH, URL));
-    // console.log(apiUrl(Service.FINANCE, URL));
-    // console.log(apiUrl(Service.FILES, URL));
   };
 
   return (
@@ -188,13 +188,13 @@ const UserData: React.FC = () => {
                   {clickedUser?.phoneNumber}
                 </Text>
               )}
-              {selectedUserHackathons ? (
+              {selectedUserHackathons.length > 0 && (
                 <Text fontSize="md">
                   <strong>Hackathons: </strong>
-                  {selectedUserHackathons}
+                  {selectedUserHackathons.map((hexathon: any) => (
+                    <p>{hexathon}</p>
+                  ))}
                 </Text>
-              ) : (
-                <></>
               )}
             </VStack>
           </ModalBody>
