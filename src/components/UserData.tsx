@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { apiUrl, Service, Header, Footer } from "@hex-labs/core";
+import { Button, ModalFooter, ModalHeader, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -26,6 +26,18 @@ const UserData: React.FC = () => {
     // finished.
 
     const getUsers = async () => {
+      
+      try {
+          console.log("Try");
+          const url = apiUrl(Service.USERS, "/users/hexlabs")
+          // there is no way to send filters to the backend route,
+          // so we have to filter client-side
+          const {data} = await axios.get(url)
+          setUsers(data)
+          
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
 
       // TODO: Use the apiUrl() function to make a request to the /users endpoint of our USERS service. The first argument is the URL
       // of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
@@ -37,7 +49,7 @@ const UserData: React.FC = () => {
       // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
 
       // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
-      const URL = 'https://users.api.hexlabs.org/users/hexlabs';
+      // const URL = 'https://users.api.hexlabs.org/users/hexlabs';
 
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
@@ -51,29 +63,64 @@ const UserData: React.FC = () => {
   // run every time a variable changes, you can put that variable in the array
   // and it will run every time that variable changes.
 
+  const sortPhoneNumber = () => {
+    setUsers(users?.filter((profile: any) => profile?.phoneNumber?.startsWith("470")));
+  }
 
+  const sortFirstName = () => {
+    let array = [...users]; // Create a copy of the users array
+
+    //Sorting function  - sorts by first name
+    array?.sort((a: any, b: any) => {
+      const comparison = a?.name?.first?.localeCompare(b?.name?.first);
+      return comparison !== 0 ? comparison : a?.name?.first?.localeCompare(b?.name?.first);
+    });
+
+    setUsers(array);
+  }
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
 
+  //Make a shuffle() function
+  const shuffle = () => {
+    let array = [...users]; // Create a copy of the users array
+    let currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    setUsers(array);
+  }
 
   return (
     <>
+      <Header> </Header>
       <Text fontSize="4xl">Hexlabs Users</Text>
       <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
-
-
+      <Button onClick={sortPhoneNumber}>Sort Phone Number</Button>
+      <br></br>
+      <Button onClick={sortFirstName}>Sort First Name</Button>
+      <br></br>
+      <Button onClick={shuffle}>Shuffle</Button>
+      <br></br>
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
-
-        {/* Here we are mapping every entry in our users array to a unique UserCard component, each with the unique respective
-        data of each unique user in our array. This is a really important concept that we use a lot so be sure to familiarize
-        yourself with the syntax - compartmentalizing code makes your work so much more readable. */}
-        { users.map((user) => (
-          <UserCard user={user} />
+        {users.map((user) => (
+            <UserCard key={user.userId} user={user} />
         ))}
+              </SimpleGrid>
+              <Footer />
+            </>
+          );
+        };
 
-      </SimpleGrid>
-    </>
-  );
-};
-
-export default UserData;
+        export default UserData;
