@@ -114,4 +114,4 @@ export default UserCard;
 // TODO: In our database structure, every user has a userId that is unique to them. This is the primary key of the user
 // and is referenced in their applications to all of our hexathons. Create a button that when clicked, will retrieve all of
 // the hexathons that the user has applied to. You can use the /applications endpoint of the registration service to do this
-// and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
+// and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.n
