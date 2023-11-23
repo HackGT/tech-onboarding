@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {apiUrl, Service } from "@hex-labs/core";
 import {
   Box,
   Flex,
@@ -10,8 +11,10 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Button,
+  Link,
+  VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 
 type User = {
   name: {
@@ -21,6 +24,7 @@ type User = {
   email: string;
   phoneNumber: string;
   userId: string;
+  resume: string;
   // Add other user properties as needed
 };
 
@@ -50,15 +54,21 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
         alignItems="center"
         onClick={openModal}
         cursor="pointer"
+        flex-direction="column"
       >
-        <Flex padding="2">
-          <HStack align="flex-end" justify="space-between">
-            <Text fontSize="xl">{`${user.name.first} ${user.name.last} \n`}</Text>
-          </HStack>
-          <Text fontSize="sm" fontWeight="semibold" mt="2">
-            {user.email}
-          </Text>
-        </Flex>
+        <Flex padding="2" flexDirection="column">
+        <HStack align="flex-end" justify="space-between">
+          <Text fontSize='xl'>{`${user.name.first} ${user.name.last}`}</Text>
+        </HStack>
+        <Text
+          fontSize="sm"
+          fontWeight="semibold"
+          justifyContent="justify"
+          mt="2"
+        >
+          {user.email}
+        </Text>
+      </Flex>
       </Box>
 
       <UserModal isOpen={isModalOpen} onClose={closeModal} user={user} />
@@ -80,10 +90,11 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, user }) => {
           <ModalHeader>User Information</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Name: {`${user.name.first} ${user.name.last}`}</Text>
-            <Text>Email: {user.email}</Text>
-            <Text>Phone Number: {user.phoneNumber}</Text>
-            <Text>User ID: {user.userId}</Text>
+            <Text fontSize="xl">Name: {user.name.first} {user.name.last}</Text>
+            <Text fontSize="xl">Email: <a href={`mailto:${user.email}`}>{user.email}</a></Text>
+            <Text fontSize="xl">Phone: {user.phoneNumber}</Text>
+            <Text fontSize="xl">User ID: {user.userId}</Text>
+            <Text fontSize="xl">User Resume: <Link href={apiUrl(Service.FILES, `/files/${user.resume}/view`)} isExternal>View Resume</Link> </Text>
           </ModalBody>
         </ModalContent>
       </Modal>
