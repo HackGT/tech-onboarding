@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { filter, SimpleGrid, Text, Button, HStack } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -39,9 +39,19 @@ const UserData: React.FC = () => {
       // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
       const URL = 'https://users.api.hexlabs.org/users/hexlabs';
 
+      try {
+        // API call
+        const response = await axios.get(apiUrl(Service.USERS, "/users/hexlabs"));
+        const users = response.data;
+        // filters by numbers stating with 470
+        const filteredUsers = users.filter((user: any) => user.phoneNumber && user.phoneNumber.startsWith("470"));
+        setUsers(filteredUsers);
+      } catch (error) {
+        console.error("Error: " + error);
+      }
       // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
       // the raw request response and extracts the actual data that we need from it.
-      // setUsers(data?.data?.profiles);
+
     };
     document.title = "Hexlabs Users"
     getUsers();
@@ -54,13 +64,20 @@ const UserData: React.FC = () => {
 
   // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
   // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
-
+  function sortByFirstName() {
+    // makes shallow copy of users and sorts by first name
+    const sortedUsers = [...users].sort((a, b) => a.name.first.localeCompare(b.name.first));
+    setUsers(sortedUsers);
+  }
 
   return (
     <>
-      <Text fontSize="4xl">Hexlabs Users</Text>
-      <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
+      <HStack>
+        <Text fontSize="4xl">Hexlabs Users</Text>
+        <Button onClick={sortByFirstName}>Sort by First Name</Button>
+      </HStack>
 
+      <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
 
