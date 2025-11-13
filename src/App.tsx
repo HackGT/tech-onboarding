@@ -5,9 +5,15 @@ import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { setPersistence, getAuth, inMemoryPersistence } from "firebase/auth";
-import { useLogin, LoadingScreen, AuthProvider } from "@hex-labs/core";
+import {
+  useLogin,
+  LoadingScreen,
+  AuthProvider,
+  Header,
+  Footer,
+} from "@hex-labs/core";
 
-import UserData from './components/UserData';
+import UserData from "./components/UserData";
 
 // a little bee ascii art
 // const art =
@@ -46,14 +52,16 @@ export const App = () => {
 
   // Sets up the AuthProvider so that any part of the application can use the
   // useAuth hook to retrieve the user's login details.
+  // header and footer from core package
   return (
     <AuthProvider app={app}>
+      <Header children={null} />
 
       {/* Setting up our React Router to route to all the different pages we may have */}
       <Routes>
         <Route path="/" element={<UserData />} />
       </Routes>
-
+      <Footer />
     </AuthProvider>
   );
 };
