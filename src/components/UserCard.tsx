@@ -1,21 +1,18 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import React from "react";
+import { useDisclosure } from "@chakra-ui/react";
+import UserModal from "./UserModal";
+import ApplicationsModal from "./ApplicationsModal";
 
 type Props = {
   user: any;
 };
 
-
 // TODO: right now, the UserCard only displays the user's name and email. Create a new modal component <UserModal> that
 // pops up when the card is clicked. In this modal, list all the user's information including name, email, phoneNumber,
-// and userId. 
+// and userId.
 
-// TODO: Explore if you can display the email as a link to the user's email that will open up the user's 
+// TODO: Explore if you can display the email as a link to the user's email that will open up the user's
 // email client and start a new email to that user. Also explore if you can provide a link to the user's resume.
 
 // TODO: In our database structure, every user has a userId that is unique to them. This is the primary key of the user
@@ -24,30 +21,49 @@ type Props = {
 // and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
 
 const UserCard: React.FC<Props> = (props: Props) => {
+  const userModal = useDisclosure();
+  const applicationsModal = useDisclosure();
 
   return (
-    <Box
-    borderWidth="1px"
-    rounded="lg"
-    boxShadow="lg"
-    height="175px"
-    fontWeight="bold"
-    alignItems="center"
-    >
-      <Flex padding="2" flexDirection="column">
-        <HStack align="flex-end" justify="space-between">
-          <Text fontSize='xl'>{`${props.user.name.first} ${props.user.name.last}`}</Text>
-        </HStack>
-        <Text
-          fontSize="sm"
-          fontWeight="semibold"
-          justifyContent="justify"
-          mt="2"
-        >
-          {props.user.email}
-        </Text>
-      </Flex>
-    </Box>
+    <>
+      <Box
+        borderWidth="1px"
+        rounded="lg"
+        boxShadow="lg"
+        height="175px"
+        fontWeight="bold"
+        alignItems="center"
+        onClick={userModal.onOpen}
+      >
+        <Flex padding="2" flexDirection="column">
+          <HStack align="flex-end" justify="space-between">
+            <Text fontSize="xl">{`${props.user.name.first} ${props.user.name.last}`}</Text>
+          </HStack>
+          <Text
+            fontSize="sm"
+            fontWeight="semibold"
+            justifyContent="justify"
+            mt="2"
+          >
+            {props.user.email}
+          </Text>
+        </Flex>
+      </Box>
+      <UserModal
+        isOpen={userModal.isOpen}
+        onClose={userModal.onClose}
+        user={props.user}
+        onApplicationsOpen={() => {
+          userModal.onClose();
+          applicationsModal.onOpen();
+        }}
+      />
+      <ApplicationsModal
+        isOpen={applicationsModal.isOpen}
+        onClose={applicationsModal.onClose}
+        user={props.user}
+      />
+    </>
   );
 };
 
