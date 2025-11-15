@@ -3,13 +3,28 @@ import {
   Flex,
   HStack,
   Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Link,
+  Button
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { apiUrl, Service } from "@hex-labs/core";
 
 type Props = {
   user: any;
 };
 
+type ModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  user: any;
+};
 
 // TODO: right now, the UserCard only displays the user's name and email. Create a new modal component <UserModal> that
 // pops up when the card is clicked. In this modal, list all the user's information including name, email, phoneNumber,
@@ -23,9 +38,50 @@ type Props = {
 // the hexathons that the user has applied to. You can use the /applications endpoint of the registration service to do this
 // and the /hexathons endpoint of the hexathons service to get a list of all the hexathons.
 
+const UserModal: React.FC<ModalProps> = (props: ModalProps) => {  
+  const [hexathons, setHexathons] = useState<any>(null);
+  const getHexathons = async () => {
+    const res = await axios.get(apiUrl(Service.HEXATHONS, `/hexathons`));
+    const data = res.data;
+    const applications = await Promise.all(data.map(async (hexathon: any) => {
+      const app = await axios.get(apiUrl(Service.REGISTRATION, '/applications'), { params: {
+        hexathon: hexathon.id, userId: props.user.userId
+      }});
+      return { hexathon, application: app.data };
+    }));
+    setHexathons(applications.filter((item: any) => item !== null));
+  };
+    return (
+    <Modal isOpen={props.isOpen} onClose={props.onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{`${props.user.name.first} ${props.user.name.last}`}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Text>Email: <Link href={`mailto:${props.user.email}`}>{props.user.email}</Link></Text>
+          <Text>Phone: {props.user.phoneNumber}</Text>
+          <Text>User ID: {props.user.userId}</Text>
+          <Button mt="4" onClick={getHexathons}>Get Applied Hexathons</Button>
+          {hexathons && (
+            <Box mt="4">
+              {hexathons.map((item: any) => (
+                <Text key={item.hexathon.id}>{item.hexathon.name}</Text>
+              ))}
+            </Box>
+          )}
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  )
+};
+
 const UserCard: React.FC<Props> = (props: Props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const onClose = () => setIsModalOpen(false);
+
 
   return (
+    <>
     <Box
     borderWidth="1px"
     rounded="lg"
@@ -33,6 +89,8 @@ const UserCard: React.FC<Props> = (props: Props) => {
     height="175px"
     fontWeight="bold"
     alignItems="center"
+    onClick={() => setIsModalOpen(true)} 
+    cursor="pointer"
     >
       <Flex padding="2" flexDirection="column">
         <HStack align="flex-end" justify="space-between">
@@ -48,6 +106,8 @@ const UserCard: React.FC<Props> = (props: Props) => {
         </Text>
       </Flex>
     </Box>
+    <UserModal isOpen={isModalOpen} onClose={onClose} user={props.user} />
+    </>
   );
 };
 
