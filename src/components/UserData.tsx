@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiUrl, Service } from "@hex-labs/core";
-import { SimpleGrid, Text } from "@chakra-ui/react";
+import { Button, SimpleGrid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import UserCard from "./UserCard";
 
@@ -26,22 +26,16 @@ const UserData: React.FC = () => {
     // finished.
 
     const getUsers = async () => {
-
-      // TODO: Use the apiUrl() function to make a request to the /users endpoint of our USERS service. The first argument is the URL
-      // of the request, which is created for the hexlabs api through our custom function apiUrl(), which builds the request URL based on
-      // the Service enum and the following specific endpoint URL.
-
-      // TODO: Also explore some of the other ways to configure the api call such as filtering and pagination.
-      // Try to filter all the users with phone numbers starting with 470 or increase the amount of users returned from the default 50 (don't go above 100).
-
-      // Postman will be your best friend here, because it's better to test out the API calls in Postman before implementing them here.
-
-      // this is the endpoint you want to hit, but don't just hit it directly using axios, use the apiUrl() function to make the request
-      const URL = 'https://users.api.hexlabs.org/users/hexlabs';
-
-      // uncomment the line below to test if you have successfully made the API call and retrieved the data. The below line takes
-      // the raw request response and extracts the actual data that we need from it.
-      // setUsers(data?.data?.profiles);
+      const response = await axios.get(apiUrl(Service.USERS, "/users/hexlabs"), {
+        // Request a larger page (default is 50) and ask the API to prefilter.
+        params: { limit: 100, phoneNumberStartsWith: "470", page: 0 },
+      });
+      const profiles: any[] = response?.data ?? [];
+      // Fallback client-side filter so we only show users whose numbers start with 470.
+      const filtered = profiles.filter((profile: any) =>
+        profile?.phoneNumber?.startsWith("470")
+      );
+      setUsers(filtered);
     };
     document.title = "Hexlabs Users"
     getUsers();
@@ -51,15 +45,23 @@ const UserData: React.FC = () => {
   // run every time a variable changes, you can put that variable in the array
   // and it will run every time that variable changes.
 
-
-  // TODO: Create a function that sorts the users array based on the first name of the users. Then, create a button that
-  // calls this function and sorts the users alphabetically by first name. You can use the built in sort() function to do this.
-
+  const sortByFirstName = () => {
+    setUsers(prevUsers =>
+      [...prevUsers].sort((a, b) => {
+        const aName = a?.name?.first || "";
+        const bName = b?.name?.first || "";
+        return aName.localeCompare(bName);
+      })
+    );
+  };
 
   return (
     <>
       <Text fontSize="4xl">Hexlabs Users</Text>
       <Text fontSize="2xl">This is an example of a page that makes an API call to the Hexlabs API to get a list of users.</Text>
+      <Button colorScheme="blue" onClick={sortByFirstName} mt={4}>
+        Sort by first name
+      </Button>
 
 
       <SimpleGrid columns={[2, 3, 5]} spacing={6} padding={10}>
