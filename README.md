@@ -1,4 +1,4 @@
-# Judge assignment exercise
+# Judge Assignment Exercise - Tech Team Onboarding
 
 Thank you for your interest in being part of HexLabs Tech Team! We work across the stack on lots of projects used in our events and want to understand both your technical skills and interest in HexLabs. You will be working on a tiny API that hands out projects to judges at a hackathon expo, specifically implementing one function. We are interested in not just if you can complete this task but how well you understand your work and how the codebase works! Please read the README.md very carefully for the task requirements.
 
