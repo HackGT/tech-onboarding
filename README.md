@@ -1,8 +1,8 @@
 # Judge assignment exercise
 
-A tiny API that hands out projects to judges at a hackathon expo. Implement one function.
+Thank you for your interest in being part of HexLabs Tech Team! We work across the stack on lots of projects used in our events and want to understand both your technical skills and interest in HexLabs. You will be working on a tiny API that hands out projects to judges at a hackathon expo, specifically implementing one function. We are interested in not just if you can complete this task but how well you understand your work and how the codebase works! Please read the README.md very carefully for the task requirements.
 
-Fork this repo, complete it in your fork, and add the link to your fork in the form.
+Please fork this repo, complete the task in your fork, and add the link to your fork in the form.
 
 ## Run it
 
