@@ -2,6 +2,8 @@
 
 A tiny API that hands out projects to judges at a hackathon expo. Implement one function.
 
+Fork this repo, complete it in your fork, and add the link to your fork in the form.
+
 ## Run it
 
 ```bash
