@@ -7,7 +7,6 @@ export function createApp() {
   const app = express();
   app.use(express.json());
 
-  // Debug helper: everything that has been assigned so far.
   app.get("/assignments", async (_req, res) => {
     res.json(await collections().assignments.find().toArray());
   });
@@ -16,10 +15,12 @@ export function createApp() {
   app.post("/assign/:judgeId", async (req, res, next) => {
     try {
       const { judgeId } = req.params;
+
       if (!(await collections().judges.findOne({ _id: judgeId }))) {
         res.status(404).json({ error: "unknown judge" });
         return;
       }
+      
       const result = await assignNext(judgeId);
       switch (result.kind) {
         case "assigned":

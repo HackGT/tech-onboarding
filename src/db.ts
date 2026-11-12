@@ -30,7 +30,18 @@ export async function startDb(): Promise<Db> {
   server = await MongoMemoryServer.create();
   client = await MongoClient.connect(server.getUri());
   db = client.db("expo");
+  // The database enforces the rules too, so two requests at once can't break them.
+
+  const assignments = db.collection<Assignment>("assignments");
+
+  await Promise.all([
+    assignments.createIndex({ judgeId: 1, projectId: 1 }, { unique: true }),
+    assignments.createIndex({ judgeId: 1 }, { unique: true, partialFilterExpression: { status: "QUEUED" } }),
+    assignments.createIndex({ projectId: 1 }, { unique: true, partialFilterExpression: { status: "QUEUED" } }),
+  ]);
+  
   return db;
+
 }
 
 export async function stopDb(): Promise<void> {

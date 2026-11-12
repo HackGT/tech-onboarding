@@ -57,4 +57,13 @@ describe("assign", () => {
     const body = await (await assign("j1")).json();
     assert.equal(body.projectId, "p10");
   });
+
+  it("never double-books a project or a judge under concurrent requests", async () => {
+    const judges = Array.from({ length: 12 }, (_, i) => `j${i + 1}`);
+    const statuses = await Promise.all([...judges, "j1"].map(async (j) => (await assign(j)).status));
+    assert.equal(statuses.filter((s) => s === 201).length, 10); // one per project
+    const queued = await collections().assignments.find({ status: "QUEUED" }).toArray();
+    assert.equal(new Set(queued.map((a) => a.projectId)).size, 10);
+    assert.equal(new Set(queued.map((a) => a.judgeId)).size, 10);
+  });
 });
